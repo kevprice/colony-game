@@ -125,16 +125,19 @@ Players win if the final colony state favors their faction.
 ## Starting the Game
 
 1. All players receive their role and faction privately.
-2. The facilitator announces:
+2. The facilitator deals with any starting knowledge for roles in play
+3. The facilitator announces:
    - the game has begun
    - players may begin discussion and power exchange
-3. Players begin interacting immediately.
-4. No formal rounds or turns are used.
+4. Players begin interacting immediately.
+5. No formal rounds or turns are used.
 
 ### Facilitator Notes
 
 - When a player receives a power:
   - they must immediately approach the facilitator
+  - ask them what they intend to do with the power: what they have been told the power does may not be what the power does.
+  - A target that is chosen by the player is the target of what is written on the power card not the target of what the player thinks is on the power card
 - Keep interactions quick to maintain flow.
 - Announce colony changes after a short delay, typically 2 to 3 minutes.
 
