@@ -52,6 +52,8 @@ Each player is assigned:
 - **Faction**: Red or Green
 - **Role**: defines their power and any passive abilities
 
+Roles and factions are assigned independently. A player may receive any role with either faction.
+
 ### Factions
 
 - **Red**: Seeks to build a control-oriented colony through surveillance, restriction, and enforcement.
@@ -77,7 +79,7 @@ Players win if the final colony state favors their faction.
   - use that power
   - choose a structure to build
 - The progressor **cannot use the same power twice** to progress.
-- The progressor may be reassigned by certain powers.
+- The progressor may be reassigned by certain powers, including role-based reassignment effects.
 
 ---
 
@@ -94,11 +96,16 @@ Players win if the final colony state favors their faction.
 - Each player is assigned:
   - 1 faction, Red or Green
   - 1 role, with an associated power
+- Role cards and faction cards are dealt separately.
 - Roles should include:
   - at least 2 to 3 **information roles**
   - at least 2 **disruption roles**
   - 1 **Saboteur**
+  - 1 **Reallocator**
+  - 1 **Purifier**
   - 1 **Endgame role**, if testing endgame
+  - at least 1 role with **starting information**
+- Roles that move progression or corruption should be rare. In most tests, include at most one of each.
 
 ### Facilitator
 
@@ -125,15 +132,30 @@ Players win if the final colony state favors their faction.
 ## Starting the Game
 
 1. All players receive their role and faction privately.
-2. The facilitator deals with any starting knowledge for roles in play
+2. The facilitator resolves any starting knowledge for roles in play.
 3. The facilitator announces:
    - the game has begun
    - players may begin discussion and power exchange
 4. Players begin interacting immediately.
 5. No formal rounds or turns are used.
 
+### Starting Information
+
+Some roles begin the game with information revealed during setup.
+
+Example setup sequence:
+
+- The **Witnesses** open their eyes and learn who the other Witness is, without learning that Witness's faction.
+- All players close their eyes.
+- The facilitator asks **Census** players in the Green faction to raise their hands, then lower them.
+- The facilitator then asks **Census** players in the Red faction to raise their hands, then lower them.
+- Witnesses learn which players are Census, and whether each observed Census player is Red or Green.
+- Census players gain no starting information from this process.
+
 ### Facilitator Notes
 
+- Resolve all starting-information steps before open discussion begins.
+- If a role receives setup information, make sure that only the intended role gains it.
 - When a player receives a power:
   - they must immediately approach the facilitator
   - ask them what they intend to do with the power: what they have been told the power does may not be what the power does.
@@ -213,9 +235,11 @@ Corruption is a **rare, persistent effect** applied by specific roles.
 
 ### Rules
 
-- Corruption is applied to the **user of a power**, not the target.
-- Corruption persists until removed by a cleansing power.
-- Only one instance of corruption may be active per source.
+- There is a single corruption line in the game.
+- At the start of the game, **Saboteur** controls corruption.
+- Corruption alternates between being controlled by a role and being attached to a corrupted player.
+- If the role currently controlling corruption has its power executed, the executor becomes **corrupted**.
+- If a player is currently corrupted and either **Saboteur** or **Purifier** has its power executed, corruption returns from that player to that role's control after the power resolves.
 
 ### Effects
 
@@ -236,31 +260,57 @@ Corruption should:
 
 ## The Saboteur
 
-The Saboteur is a Red-aligned role.
+The Saboteur is a role that may belong to either faction.
 
 ### Power
 
 - Provides a useful effect, such as an identity check.
-- When used, the **executor becomes corrupted**.
+- If Saboteur currently controls corruption, the **executor becomes corrupted**.
 
 ### Constraints
 
-- Only one player may be corrupted at a time via this role.
-- To apply corruption again, the Saboteur must:
-  - receive a power
-  - access the facilitator
-- If corruption is removed before rearming, the Saboteur loses access to corruption.
+- Saboteur begins the game controlling corruption.
+- If a player is currently corrupted and Saboteur's power is used, Saboteur reclaims control of corruption after resolving its effect.
 
 ### Design Intent
 
 - The Saboteur must participate in the trust network.
-- Corruption is intentional, targeted, and delayed in impact.
+- Corruption is intentional, targeted, and contestable.
+
+---
+
+## The Purifier
+
+The Purifier is a role that may belong to either faction.
+
+### Power
+
+- Provides a useful effect, such as an exact faction check.
+- If Purifier currently controls corruption, the **executor becomes corrupted**.
+
+### Constraints
+
+- Purifier does not begin the game controlling corruption.
+- If a player is currently corrupted and Purifier's power is used, Purifier reclaims control of corruption after resolving its effect.
+
+### Design Intent
+
+- The Purifier is not a simple counter to Saboteur.
+- It competes with Saboteur to control when and how corruption re-enters the game.
 
 ---
 
 ## Core Information Roles
 
 These roles provide **strong, binary truth**.
+
+### Witness
+
+- Learns whether 2 selected players are on the same faction.
+
+### Census
+
+- Learns a player's role.
 
 ### Sentinel
 
@@ -269,10 +319,6 @@ These roles provide **strong, binary truth**.
 ### Tracker
 
 - Learns whether a player is the progressor.
-
-### Auditor
-
-- Learns whether a player executed a power recently.
 
 ### Diagnostician
 

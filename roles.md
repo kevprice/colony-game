@@ -5,43 +5,94 @@ Each player is assigned:
 - 1 faction, Red or Green
 - 1 role
 
+Faction and role are assigned independently. A player may receive any role with either faction.
+
 All roles provide a **power** that must be given to another player to execute.
 
 ---
 
-## Red Roles
+## Starting Information Roles
+
+These roles receive information during setup, before open discussion begins.
+
+### Witness
+
+**Faction:** Variable, assigned during setup
+
+**Count:** Exactly 2 copies when in play
+
+**Starting Information:**
+
+- Both Witnesses open their eyes during setup.
+- Each Witness learns who the other Witness is.
+- Neither Witness learns the other Witness's faction.
+- While all other players keep their eyes closed, Witnesses also observe which Census players are Green and which Census players are Red.
+
+**Power:**
+
+- Select 2 players.
+- Learn: `Are they on the same faction? (Yes / No)`
+
+**Design Notes:**
+
+- This role creates an immediate social anchor without creating a confirmed alliance.
+- The tension comes from knowing a role match while still having to infer that player's faction.
+- Witnesses also begin with partial faction knowledge about Census players, giving them real but incomplete setup information.
+- The active power is relational rather than self-referential, so it does not duplicate Sentinel.
+
+---
+
+### Census
+
+**Faction:** Variable, assigned during setup
+
+**Starting Information:**
+
+- Census players keep their eyes closed during setup.
+- When instructed by the facilitator, Census players in the Green faction raise their hands, then lower them.
+- When instructed again, Census players in the Red faction raise their hands, then lower them.
+- Census players gain **no information** from this process.
+
+**Power:**
+
+- Select a player.
+- Learn that player's role.
+
+**Design Notes:**
+
+- Census is an information source for Witness during setup, not an information receiver.
+- Census still needs a strong standard gameplay power so the role remains desirable to pass and use.
+
+---
+
+## Disruption Roles
 
 ### Saboteur
 
-**Faction:** Red
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
 - Learn the role of a target player.
 
-**Hidden Effect:**
-
-- The player who executes this power becomes **corrupted**.
-
 **Corruption Rules:**
 
-- Only one player may be corrupted by this role at a time.
-- To apply corruption again:
-  - the Saboteur must receive a power
-  - and access the facilitator
-- If corruption is removed before rearming:
-  - the Saboteur loses access to corruption
+- Saboteur and Purifier contest control of a single corruption line.
+- Saboteur begins the game controlling corruption.
+- If Saboteur currently controls corruption when this power is executed, the executor becomes **corrupted**.
+- If a player is currently corrupted when this power is executed, corruption returns from that player to Saboteur's control after the power resolves.
 
 **Design Notes:**
 
 - Corruption applies to the **executor**, not the target.
 - This power should appear useful and desirable.
+- Saboteur is defined by starting with corruption, not by having a unique corruption mechanic.
 
 ---
 
 ### Obfuscator
 
-**Faction:** Red
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
@@ -60,7 +111,7 @@ All roles provide a **power** that must be given to another player to execute.
 
 ### Controller
 
-**Faction:** Red
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
@@ -74,27 +125,35 @@ All roles provide a **power** that must be given to another player to execute.
 
 ---
 
-### Warden
+## Control Roles
 
-**Faction:** Red
+### Reallocator
+
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
-- Select a player.
-- They must accept the next power given to them.
+- Select a role.
+- The current progressor becomes a player with that role.
+
+**Resolution Rules:**
+
+- If multiple players share that role, the facilitator selects one of them.
+- If no player has that role, the effect fails.
 
 **Design Notes:**
 
-- Forces interaction.
-- Can expose or trap key roles.
+- This role contests control without allowing precise player-by-player targeting.
+- It creates uncertainty and deduction around who benefits from moving progression.
+- Include at most 1 Reallocator in a test setup.
 
 ---
 
-## Green Roles
+## Information Roles
 
 ### Sentinel
 
-**Faction:** Green
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
@@ -105,7 +164,7 @@ All roles provide a **power** that must be given to another player to execute.
 
 ### Tracker
 
-**Faction:** Green
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
@@ -114,20 +173,9 @@ All roles provide a **power** that must be given to another player to execute.
 
 ---
 
-### Auditor
-
-**Faction:** Green
-
-**Power:**
-
-- Select a player.
-- Learn: `Have they executed a power recently? (Yes / No)`
-
----
-
 ### Diagnostician
 
-**Faction:** Green
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
@@ -136,18 +184,29 @@ All roles provide a **power** that must be given to another player to execute.
 
 ---
 
-### Cleanser
+## Recovery Roles
 
-**Faction:** Green
+### Purifier
+
+**Faction:** Variable, assigned during setup
 
 **Power:**
 
-- Remove corruption from a target player.
+- Learn the faction of a target player.
+
+**Corruption Rules:**
+
+- Saboteur and Purifier contest control of a single corruption line.
+- Purifier does not begin the game controlling corruption.
+- If Purifier currently controls corruption when this power is executed, the executor becomes **corrupted**.
+- If a player is currently corrupted when this power is executed, corruption returns from that player to Purifier's control after the power resolves.
 
 **Design Notes:**
 
-- If corruption is removed before the Saboteur rearms:
-  - the Saboteur loses corruption
+- Purifier has a game-useful information power even when not controlling corruption.
+- Purifier can steal corruption back and then function as the active corruption role.
+- The difference between Saboteur and Purifier is primarily who begins with control of corruption.
+- Include at most 1 Purifier in a test setup.
 
 ---
 
@@ -185,12 +244,17 @@ When adding new roles, each role should:
 - distort a key question
 - or block access to a key question
 
+Roles should not assume faction alignment. Faction should remain a separate assignment unless a specific variant explicitly says otherwise.
+
 Avoid:
 
 - weak or redundant roles
 - roles that provide vague or non-actionable information
+- too many control or corruption-moving roles in the same setup
 
 All powers must:
 
 - be desirable enough to be passed
 - create meaningful decisions when used
+
+Rare systemic roles such as **Saboteur**, **Purifier**, and **Reallocator** should usually appear at most once each in a test setup.
