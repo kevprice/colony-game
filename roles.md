@@ -9,6 +9,11 @@ Faction and role are assigned independently. A player may receive any role with 
 
 All roles provide a **power** that must be given to another player to execute.
 
+Global targeting rule:
+
+- Players may not target themselves with any power.
+- All powers must target another player unless a role explicitly states otherwise.
+
 ---
 
 ## Starting Information Roles
@@ -127,25 +132,27 @@ These roles receive information during setup, before open discussion begins.
 
 ## Control Roles
 
-### Reallocator
+### Redirector
 
 **Faction:** Variable, assigned during setup
 
 **Power:**
 
-- Select a role.
-- The current progressor becomes a player with that role.
+- Select a player.
+- The next time that player executes a power, the target of that power becomes the progressor.
 
 **Resolution Rules:**
 
-- If multiple players share that role, the facilitator selects one of them.
-- If no player has that role, the effect fails.
+- The effect is delayed and persists until that player executes a power.
+- The effect applies once, then expires.
+- Because players may not target themselves, the affected executor cannot make themselves progressor through this effect.
+- If the executed power has multiple targets, the facilitator selects which target becomes the progressor.
 
 **Design Notes:**
 
-- This role contests control without allowing precise player-by-player targeting.
-- It creates uncertainty and deduction around who benefits from moving progression.
-- Include at most 1 Reallocator in a test setup.
+- This role changes progression indirectly through player behavior rather than by naming the new progressor outright.
+- It creates uncertainty, social pressure, and counterplay around who receives powers and who they choose to target.
+- Include at most 1 Redirector in a test setup.
 
 ---
 
@@ -257,4 +264,4 @@ All powers must:
 - be desirable enough to be passed
 - create meaningful decisions when used
 
-Rare systemic roles such as **Saboteur**, **Purifier**, and **Reallocator** should usually appear at most once each in a test setup.
+Rare systemic roles such as **Saboteur**, **Purifier**, and **Redirector** should usually appear at most once each in a test setup.

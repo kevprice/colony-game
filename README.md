@@ -22,6 +22,8 @@ The game is resolved through:
 2. **Player communication is unverified**
    - Players may lie freely.
    - There is no mechanic to verify whether a player is telling the truth.
+   - Players may lie about what power they are giving to another player.
+   - The facilitator does not correct false claims about a power's identity.
 3. **All meaningful actions require trust**
    - Players cannot use their own powers.
    - All powers must be given to another player to execute.
@@ -42,6 +44,11 @@ The game runs continuously with no fixed rounds.
 3. The facilitator resolves the power privately.
 4. If Player B is the **progressor**, they may choose to advance the colony.
 5. After a short delay, such as 2 to 3 minutes, the facilitator announces any changes to the colony.
+
+### Global Targeting Rule
+
+- Players may not target themselves with any power.
+- All powers must target another player unless a role explicitly states otherwise.
 
 ---
 
@@ -79,7 +86,7 @@ Players win if the final colony state favors their faction.
   - use that power
   - choose a structure to build
 - The progressor **cannot use the same power twice** to progress.
-- The progressor may be reassigned by certain powers, including role-based reassignment effects.
+- The progressor may change through certain role effects, including delayed or indirect redirection effects.
 
 ---
 
@@ -101,7 +108,7 @@ Players win if the final colony state favors their faction.
   - at least 2 to 3 **information roles**
   - at least 2 **disruption roles**
   - 1 **Saboteur**
-  - 1 **Reallocator**
+  - 1 **Redirector**
   - 1 **Purifier**
   - 1 **Endgame role**, if testing endgame
   - at least 1 role with **starting information**
@@ -158,8 +165,10 @@ Example setup sequence:
 - If a role receives setup information, make sure that only the intended role gains it.
 - When a player receives a power:
   - they must immediately approach the facilitator
-  - ask them what they intend to do with the power: what they have been told the power does may not be what the power does.
-  - A target that is chosen by the player is the target of what is written on the power card not the target of what the player thinks is on the power card
+  - ask them what they intend to do with the power: what they have been told the power does may not be what the power actually does
+  - resolve the power according to the card they were actually given, not according to what another player claimed it was
+  - a target chosen by the player is the target of what is written on the power card, not the target of what the player thinks is on the power card
+  - do not reveal whether a player was misled about the power they received
 - Keep interactions quick to maintain flow.
 - Announce colony changes after a short delay, typically 2 to 3 minutes.
 
@@ -323,6 +332,10 @@ These roles provide **strong, binary truth**.
 ### Diagnostician
 
 - Learns whether a player is corrupted.
+
+### Redirector
+
+- Marks a player so that the next time they execute a power, that power's target becomes the progressor.
 
 ---
 
