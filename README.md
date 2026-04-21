@@ -2,15 +2,15 @@
 
 ## Overview
 
-Colony is a real-time social deduction game set in a post-apocalyptic cyberpunk ruin, built around **delegated programs, hidden roles, and Grid-mediated truth**.
+Colony is a real-time social deduction game set in a post-apocalyptic cyberpunk ruin, built around **delegated programs **(a user's powers)**, hidden roles, and The Grid** (A game facilitator).
 
-Players do not act directly. Instead, they must **jack executable programs into other players and trust them to run those programs through the Grid**, creating a network of dependency, deception, and inference.
+Players do not act directly. Instead, their programmes must be delegated to other players to be executed in the grid, creating a network of dependency, deception, and inference.
 
 The game is resolved through:
 
-- private interactions with the **Operator** and the **Grid**
+- enacting other players powers in private interactions with the **Operator** and the **Grid**
 - a shared but gated **trace log**
-- a changing **network state** shaped by player decisions
+- a changing **network state** (win conditions) shaped by player decisions
 
 ---
 
@@ -29,7 +29,7 @@ The game is resolved through:
    - All programs must be loaded into another player to be run.
 4. **Progression is controlled but contestable**
    - A single player, the **Architect** (the player who can advance the network), can advance the network.
-   - This role is hidden, persistent, and transferable.
+   - This state is hidden, persistent, and transferable.
 
 ---
 
