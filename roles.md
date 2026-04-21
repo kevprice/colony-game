@@ -7,18 +7,18 @@ Each player is assigned:
 
 Faction and role are assigned independently. A player may receive any role with either faction.
 
-All roles provide a **power** that must be given to another player to execute.
+All roles provide a **program** that must be loaded into another player to execute.
 
 Global targeting rule:
 
-- Players may not target themselves with any power.
-- All powers must target another player unless a role explicitly states otherwise.
+- Players may not target themselves with any program.
+- All programs must target another player unless a role explicitly states otherwise.
 
-Global power-handling rules:
+Global program-handling rules:
 
-- A player may hold at most 1 power belonging to another player at a time.
-- A power received for execution may not be transferred to a third player.
-- After visiting the facilitator and resolving a power, the executor must immediately return that power to its owner.
+- A player may hold at most 1 program belonging to another player at a time.
+- A program received for execution may not be transferred to a third player.
+- After visiting the Operator and resolving a program, the executor must immediately return that program to its owner.
 
 ---
 
@@ -30,13 +30,13 @@ Roles should satisfy all of the following where possible:
 - affect a core question in the game
 - avoid weak, partial, or statistical output
 - avoid reproducing information that is already mostly available from room observation
-- avoid narrow edge-case powers that rarely matter
+- avoid narrow edge-case programs that rarely matter
 
 Core questions include:
 
 - who is on my team?
-- who is the progressor?
-- who is corrupted?
+- who is the Architect?
+- who is tainted?
 - what action actually happened?
 
 Do not add roles that rely on:
@@ -44,7 +44,7 @@ Do not add roles that rely on:
 - partial information such as `2+`, `one of`, or `likely`
 - mirrored duplicates with no meaningful functional difference
 - public revelation mechanics
-- powers that mostly reproduce what players can already infer by watching who goes to the facilitator
+- programs that mostly reproduce what players can already infer by watching who goes to the Operator
 
 ---
 
@@ -52,22 +52,22 @@ Do not add roles that rely on:
 
 This is the current role pool worth keeping in the repository.
 
-### Setup Information Roles
+### Boot-Sequence Roles
 
-#### Witness
+#### Ghost Pair
 
 **Faction:** Variable, assigned during setup
 
 **Count:** Exactly 2 copies when in play
 
-**Starting Information:**
+**Boot Sequence:**
 
-- Both Witnesses open their eyes during setup.
-- Each Witness learns who the other Witness is.
-- Neither Witness learns the other Witness's faction.
-- While all other players keep their eyes closed, Witnesses also observe which Census players are Green and which Census players are Red.
+- Both Ghost Pair operators open their eyes during setup.
+- Each Ghost Pair operator learns who the other Ghost Pair operator is.
+- Neither Ghost Pair operator learns the other operator's faction.
+- While all other players keep their eyes closed, Ghost Pair operators also observe which Registry players are Green and which Registry players are Red.
 
-**Power:**
+**Program:**
 
 - Select 2 players.
 - Learn: `Are they on the same faction? (Yes / No)`
@@ -75,31 +75,31 @@ This is the current role pool worth keeping in the repository.
 **Design Notes:**
 
 - This role creates an immediate social anchor without creating a confirmed alliance.
-- The tension comes from knowing a role match while still having to infer that player's faction.
-- Witnesses also begin with partial faction knowledge about Census players.
+- The tension comes from knowing a matching ghost in the network while still having to infer that operator's faction.
+- Ghost Pair operators also begin with partial faction knowledge about Registry players.
 
 ---
 
-#### Census
+#### Registry
 
 **Faction:** Variable, assigned during setup
 
-**Starting Information:**
+**Boot Sequence:**
 
-- Census players keep their eyes closed during setup.
-- When instructed by the facilitator, Census players in the Green faction raise their hands, then lower them.
-- When instructed again, Census players in the Red faction raise their hands, then lower them.
-- Census players gain **no information** from this process.
+- Registry players keep their eyes closed during setup.
+- When instructed by the Operator, Registry players in the Green faction raise their hands, then lower them.
+- When instructed again, Registry players in the Red faction raise their hands, then lower them.
+- Registry players gain **no information** from this process.
 
-**Power:**
+**Program:**
 
 - Select a player.
 - Learn that player's role.
 
 **Design Notes:**
 
-- Census is an information source for Witness during setup, not an information receiver.
-- Census has a strong direct information power during normal play.
+- Registry is an information source for Ghost Pair during boot sequence, not an information receiver.
+- Registry has a strong direct information program during normal play.
 
 ---
 
@@ -107,101 +107,101 @@ This is the current role pool worth keeping in the repository.
 
 Keep only one direct faction-check family in active use at a time.
 
-#### Sentinel
+#### Handshake
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
 - Learn: `Are they on your faction? (Yes / No)`
 
 **Design Notes:**
 
-- This is the simplest direct faction-check role.
+- This is the cleanest direct faction-check role in the pool.
 - Do not duplicate this role family with near-identical alternatives.
 
 ---
 
-### Progressor Roles
+### Architect Roles
 
-#### Tracker
+#### Signal Trace
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
-- Learn: `Are they the current progressor? (Yes / No)`
+- Learn: `Are they the current Architect? (Yes / No)`
 
 ---
 
-#### Redirector
+#### Rerouter
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
-- The next time that player executes a power, the target of that power becomes the progressor.
+- The next time that player runs a program, the target of that program becomes the Architect.
 
 **Resolution Rules:**
 
-- The effect is delayed and persists until that player executes a power.
+- The effect is delayed and persists until that player runs a program.
 - The effect applies once, then expires.
-- Because players may not target themselves, the affected executor cannot make themselves progressor through this effect.
-- If the executed power has multiple targets, the facilitator selects which target becomes the progressor.
+- Because players may not target themselves, the affected executor cannot make themselves Architect through this effect.
+- If the executed program has multiple targets, the Operator selects which target becomes the Architect.
 
 **Design Notes:**
 
-- This role changes progression indirectly through player behavior rather than by naming the new progressor outright.
-- It creates uncertainty, social pressure, and counterplay around who receives powers and who they choose to target.
+- This role changes progression indirectly through player behavior rather than by naming the new Architect outright.
+- It creates uncertainty, pressure, and counterplay around who receives programs and who they choose to target.
 
 ---
 
-### Log and Action Truth Roles
+### Trace and Action Truth Roles
 
 These roles should reveal information that is not already obvious from watching the room.
 
-#### Full Auditor
+#### Trace Auditor
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
 - Learn:
-  - what power they last used
-  - whose power it was
+  - what program they last ran
+  - whose program it was
 
 ---
 
-#### Target Revealer
+#### Target Trace
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
 - Learn who they last targeted.
 
 ---
 
-#### Log Snapshot
+#### Snapshot
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
-- Learn the full details of the most recent log entry.
+- Learn the full details of the most recent trace-log entry.
 
 ---
 
-#### Action Confirmation
+#### Exec Check
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
 - Learn: `Did their last action succeed? (Yes / No)`
@@ -210,132 +210,132 @@ These roles should reveal information that is not already obvious from watching 
 
 ### Disruption Roles
 
-#### Controller
+#### Kill Switch
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
-- Their next power use has no effect.
+- Their next program use has no effect.
 
 **Design Notes:**
 
-- The facilitator should return: `No effect` or `Action failed`.
-- The result should not reveal that blocking occurred.
+- The Operator should return: `No effect` or `Action failed`.
+- The result should not reveal that the run was blocked.
 
 ---
 
-#### Obfuscator
+#### Scrambler
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
-- The next time they appear in the log, one field is incorrect:
+- The next time they appear in the trace log, one field is incorrect:
   - identity
   - source
-  - or corruption status
+  - or taint status
 
 **Design Notes:**
 
-- Must not remove the log entry entirely.
+- Must not remove the trace entry entirely.
 - Should create doubt, not erase information.
 
 ---
 
-### Corruption Roles
+### Taint Roles
 
-#### Saboteur
+#### Spoofer
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Learn the role of a target player.
 
 **Hidden Effect:**
 
-- The executor becomes **corrupted** if the Saboteur is armed.
+- The executor becomes **tainted** if the Spoofer is armed.
 
 **Constraints:**
 
-- Only one active corruption from this role may exist at a time.
-- Saboteur begins the game armed.
-- After corruption is applied, Saboteur must receive another power and access the facilitator to re-arm corruption.
+- Only one active taint from this role may exist at a time.
+- Spoofer begins the game armed.
+- After taint is applied, Spoofer must receive another program and access the Operator to re-arm taint.
 
 **Design Notes:**
 
-- Corruption applies to the executor, not the target.
-- This power should appear useful and desirable.
+- Taint applies to the executor, not the target.
+- This program should appear useful and desirable.
 - Delegation and trust remain central to re-use.
 
 ---
 
-#### Purifier
+#### Sink
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
-- If they are corrupted, remove corruption from them and take that corruption onto yourself.
+- If they are tainted, remove taint from them and take that taint onto yourself.
 
 **Design Notes:**
 
-- This role removes corruption from another player by taking it onto its own user.
-- It keeps corruption in circulation rather than destroying it.
-- It creates strategic risk for the user and for anyone trusting them.
+- This role pulls taint off another player by acting as a dirty drain for the Grid.
+- It keeps taint in circulation rather than destroying it.
+- It creates strategic risk for the user and for anyone trusting them afterward.
 
 ---
 
-#### Exorcist
+#### Purge
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
-- If they are currently corrupted, remove that corruption from the game entirely.
+- If they are currently tainted, remove that taint from the game entirely.
 
 **Design Notes:**
 
 - This is a true purge rather than a transfer.
-- If used on a non-corrupted player, it fails.
-- Keep this role distinct from Purifier in both rules and play language.
+- If used on a non-tainted player, it fails.
+- Keep this role distinct from Sink in both rules and table language.
 
 ---
 
-#### Diagnostician
+#### Scanner
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Select a player.
-- Learn: `Are they currently corrupted? (Yes / No)`
+- Learn: `Are they currently tainted? (Yes / No)`
 
 ---
 
 ### Special Roles
 
-#### Advocate (Endgame Role)
+#### Bootstrap
 
 **Faction:** Variable, assigned during setup
 
-**Power:**
+**Program:**
 
 - Initiate endgame.
 
 **Conditions:**
 
-- Can only be used after a minimum number of structures are built. Recommended: 3.
+- Can only be used after a minimum number of nodes are built. Recommended: 3.
 
 **Effect:**
 
 - Triggers the final phase of the game.
-- Remaining structures determine the outcome.
+- Remaining nodes determine the outcome.
 
 **Design Notes:**
 
@@ -364,9 +364,9 @@ These role ideas should not be kept in the active pool.
 When proposing new roles, prefer roles that give:
 
 - direct faction truth
-- direct progressor truth
-- direct corruption truth
-- direct action or log truth
+- direct Architect truth
+- direct taint truth
+- direct action or trace-log truth
 - clear disruption of one of the above
 
 Avoid roles that:
@@ -376,4 +376,4 @@ Avoid roles that:
 - produce weak, partial, or statistical output
 - only matter in rare edge cases
 
-Rare systemic roles such as **Saboteur**, **Purifier**, **Exorcist**, and **Redirector** should usually appear at most once each in a test setup.
+Rare systemic roles such as **Spoofer**, **Sink**, **Purge**, and **Rerouter** should usually appear at most once each in a test setup.

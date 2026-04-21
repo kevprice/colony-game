@@ -1,34 +1,34 @@
-# Colony: A Social Deduction Game
+# Colony: A Cyberpunk Social Deduction Game
 
 ## Overview
 
-Colony is a real-time social deduction game built around **delegated actions, hidden roles, and system-mediated truth**.
+Colony is a real-time social deduction game set in a post-apocalyptic cyberpunk ruin, built around **delegated programs, hidden roles, and Grid-mediated truth**.
 
-Players do not act directly. Instead, they must **trust other players to execute powers on their behalf**, creating a network of dependency, deception, and inference.
+Players do not act directly. Instead, they must **jack executable programs into other players and trust them to run those programs through the Grid**, creating a network of dependency, deception, and inference.
 
 The game is resolved through:
 
-- private interactions with a facilitator (the System)
-- a shared but gated log of actions
-- a changing colony state shaped by player decisions
+- private interactions with the **Operator** and the **Grid**
+- a shared but gated **trace log**
+- a changing **network state** shaped by player decisions
 
 ---
 
 ## Core Principles
 
-1. **System truth is absolute**
-   - The facilitator always provides correct information, unless corruption is applied.
-   - All power results are truthful.
+1. **Grid truth is absolute**
+   - The Operator always provides correct information, unless taint is applied.
+   - All program results are truthful.
 2. **Player communication is unverified**
    - Players may lie freely.
    - There is no mechanic to verify whether a player is telling the truth.
-   - Players may lie about what power they are giving to another player.
-   - The facilitator does not correct false claims about a power's identity.
+   - Players may lie about what program they are loading into another player.
+   - The Operator does not correct false claims about a program's identity.
 3. **All meaningful actions require trust**
-   - Players cannot use their own powers.
-   - All powers must be given to another player to execute.
+   - Players cannot run their own programs.
+   - All programs must be loaded into another player to be run.
 4. **Progression is controlled but contestable**
-   - A single player, the *progressor*, can advance the colony.
+   - A single player, the **Architect** (the player who can advance the network), can advance the network.
    - This role is hidden, persistent, and transferable.
 
 ---
@@ -37,62 +37,62 @@ The game is resolved through:
 
 The game runs continuously with no fixed rounds.
 
-1. Players discuss, negotiate, and exchange powers.
-2. When Player A gives a power to Player B:
-   - Player B must immediately go to the facilitator.
-   - Player B must use the power.
-3. The facilitator resolves the power privately.
-4. If Player B is the **progressor**, they may choose to advance the colony.
-5. After a short delay, such as 2 to 3 minutes, the facilitator announces any changes to the colony.
+1. Players discuss, negotiate, and exchange programs.
+2. When Player A jacks a program into Player B:
+   - Player B must immediately go to the Operator.
+   - Player B must run the program.
+3. The Operator resolves the program privately through the Grid.
+4. If Player B is the **Architect**, they may choose to advance the network by building a node.
+5. After a short delay, such as 2 to 3 minutes, the Operator announces any changes to the network state.
 
 ### Global Targeting Rule
 
-- Players may not target themselves with any power.
-- All powers must target another player unless a role explicitly states otherwise.
+- Players may not target themselves with any program.
+- All programs must target another player unless a role explicitly states otherwise.
 
-### Global Power-Handling Rules
+### Global Program-Handling Rules
 
-- A player may hold at most 1 power belonging to another player at a time.
-- A power received for execution may not be transferred to a third player.
-- After visiting the facilitator and resolving a power, the executor must immediately return that power to its owner.
+- A player may hold at most 1 program belonging to another player at a time.
+- A program received for execution may not be forwarded to a third player.
+- After visiting the Operator and resolving a program, the executor must immediately return that program to its owner.
 
 ---
 
-## Roles, Powers, and Factions
+## Roles, Programs, and Factions
 
 Each player is assigned:
 
 - **Faction**: Red or Green
-- **Role**: defines their power and any passive abilities
+- **Role**: defines their program and any passive abilities
 
 Roles and factions are assigned independently. A player may receive any role with either faction.
 
 ### Factions
 
-- **Red**: Seeks to build a control-oriented colony through surveillance, restriction, and enforcement.
-- **Green**: Seeks to build a decentralized, cooperative colony through privacy, trust, and shared control.
+- **Red**: Seeks to rebuild the network through control, surveillance, lockouts, and enforcement.
+- **Green**: Seeks to rebuild the network through distributed trust, shared routing, privacy, and cooperative access.
 
-Players win if the final colony state favors their faction.
+Players win if the final network state favors their faction.
 
 ---
 
 ## Progression System
 
-### The Progressor
+### The Architect
 
-- One player is the **current progressor**.
-- The progressor:
+- One player is the **current Architect**.
+- The Architect:
   - remains in that role until changed
-  - may advance the colony when executing a power
+  - may advance the network when running a program
 
 ### Progress Rules
 
-- The progressor must:
-  - receive a power from another player
-  - use that power
-  - choose a structure to build
-- The progressor **cannot use the same power twice** to progress.
-- The progressor may change through certain role effects, including delayed or indirect redirection effects.
+- The Architect must:
+  - receive a program from another player
+  - run that program
+  - choose a node to build
+- The Architect **cannot use the same program twice** to progress.
+- The Architect may change through certain role effects, including delayed or indirect redirection effects.
 
 ---
 
@@ -108,136 +108,136 @@ Players win if the final colony state favors their faction.
 
 - Each player is assigned:
   - 1 faction, Red or Green
-  - 1 role, with an associated power
+  - 1 role, with an associated program
 - Role cards and faction cards are dealt separately.
 - Roles should include:
   - at least 2 to 3 **information roles**
   - at least 2 **disruption roles**
-  - 1 **Saboteur**
-  - 1 **Redirector**
-  - 1 **Purifier**
-  - 1 **Exorcist**
-  - 1 **Endgame role**, if testing endgame
-  - at least 1 role with **starting information**
-- Roles that move progression or corruption should be rare. In most tests, include at most one of each.
+  - 1 **Spoofer**
+  - 1 **Rerouter**
+  - 1 **Sink**
+  - 1 **Purge**
+  - 1 **Bootstrap** role, if testing endgame
+  - at least 1 role with **boot-sequence information**
+- Roles that move progression or taint should be rare. In most tests, include at most one of each.
 
-### Facilitator
+### Operator
 
-- One player acts as the **facilitator**, or the System.
+- One player acts as the **Operator** for the Grid.
 - Responsibilities:
-  - resolve all powers privately
-  - maintain the log
+  - resolve all programs privately
+  - maintain the trace log
   - track:
-    - progressor
-    - corruption
-    - colony state
+    - Architect
+    - taint
+    - network state
 
 ### Initial State
 
-- No structures are built at the start.
-- Logging is **disabled** unless explicitly enabled by a structure.
+- No nodes are built at the start.
+- The trace log is **disabled** unless explicitly enabled by a node.
 
-### Progressor
+### Architect
 
-- One player is secretly assigned as the **initial progressor**.
+- One player is secretly assigned as the **initial Architect**.
 
 ---
 
-## Starting the Game
+## Boot Sequence
 
 1. All players receive their role and faction privately.
-2. The facilitator resolves any starting knowledge for roles in play.
-3. The facilitator announces:
-   - the game has begun
-   - players may begin discussion and power exchange
+2. The Operator resolves any boot-sequence information for roles in play.
+3. The Operator announces:
+   - the Grid is live
+   - players may begin discussion and program exchange
 4. Players begin interacting immediately.
 5. No formal rounds or turns are used.
 
-### Starting Information
+### Boot-Sequence Information
 
 Some roles begin the game with information revealed during setup.
 
-Example setup sequence:
+Example boot sequence:
 
-- The **Witnesses** open their eyes and learn who the other Witness is, without learning that Witness's faction.
+- The **Ghost Pair** open their eyes and learn who the other Ghost Pair operator is, without learning that operator's faction.
 - All players close their eyes.
-- The facilitator asks **Census** players in the Green faction to raise their hands, then lower them.
-- The facilitator then asks **Census** players in the Red faction to raise their hands, then lower them.
-- Witnesses learn which players are Census, and whether each observed Census player is Red or Green.
-- Census players gain no starting information from this process.
+- The Operator asks **Registry** players in the Green faction to raise their hands, then lower them.
+- The Operator then asks **Registry** players in the Red faction to raise their hands, then lower them.
+- Ghost Pair operators learn which players are Registry, and whether each observed Registry player is Red or Green.
+- Registry players gain no boot-sequence information from this process.
 
-### Facilitator Notes
+### Operator Notes
 
-- Resolve all starting-information steps before open discussion begins.
+- Resolve all boot-sequence steps before open discussion begins.
 - If a role receives setup information, make sure that only the intended role gains it.
-- When a player receives a power:
-  - they must immediately approach the facilitator
-  - ask them what they intend to do with the power: what they have been told the power does may not be what the power actually does
-  - resolve the power according to the card they were actually given, not according to what another player claimed it was
-  - a target chosen by the player is the target of what is written on the power card, not the target of what the player thinks is on the power card
-  - do not reveal whether a player was misled about the power they received
+- When a player receives a program:
+  - they must immediately approach the Operator
+  - ask them what they intend to do with the program: what they have been told the program does may not be what the program actually does
+  - resolve the program according to the card they were actually given, not according to what another player claimed it was
+  - a target chosen by the player is the target of what is written on the program card, not the target of what the player thinks is on the card
+  - do not reveal whether a player was misled about the program they received
 - Keep interactions quick to maintain flow.
-- Announce colony changes after a short delay, typically 2 to 3 minutes.
+- Announce network changes after a short delay, typically 2 to 3 minutes.
 
 ---
 
-## Colony Structures
+## Network Nodes
 
-- Each structure:
+- Each node:
   - is known to all players
   - has a **Red or Green alignment**
   - modifies how the game behaves
-- The game ends after a fixed number of structures are built.
+- The game ends after a fixed number of nodes are built.
 - The faction with majority alignment wins.
 
-### Initial Structure List (v0.1)
+### Initial Node List (v0.1)
 
-#### Red-Aligned Structures
+#### Red-Aligned Nodes
 
-**Logging**
+**Trace Archive**
 
-- Enables access to the system log via powers.
+- Enables access to the trace log via programs.
 
-**Security**
+**Alarm Mesh**
 
-- The facilitator may announce when actions occur.
+- The Operator may announce when actions occur.
 
-**Detention**
+**Lockout**
 
-- The progressor may restrict a player from receiving powers temporarily.
+- The Architect may restrict a player from receiving programs temporarily.
 
-#### Green-Aligned Structures
+#### Green-Aligned Nodes
 
-**Diplomacy**
+**Consensus Patch**
 
 - Progression requires an additional player's approval.
 
-**Encryption**
+**Cipher Veil**
 
-- Log queries return incomplete information.
+- Trace-log queries return incomplete information.
 
 ### Notes
 
-- All structures are known to players at the start.
-- Each build shifts the colony toward Red or Green alignment.
+- All nodes are known to players at the start.
+- Each build shifts the network toward Red or Green alignment.
 
 ---
 
-## The Log System
+## The Trace Log
 
-The system maintains a hidden log of all actions.
+The Grid maintains a hidden trace log of all actions.
 
-Each log entry contains:
+Each trace entry contains:
 
-- executor, or who used the power
-- source, or whose power was used
-- power name
-- whether the executor was **corrupted**
-- whether the executor was the **progressor**
+- executor, or who ran the program
+- source, or whose program was run
+- program name
+- whether the executor was **tainted**
+- whether the executor was the **Architect**
 
-Players may gain access to the log via powers.
+Players may gain access to the trace log via programs.
 
-Log access is:
+Trace-log access is:
 
 - partial
 - query-based
@@ -245,29 +245,29 @@ Log access is:
 
 ---
 
-## Corruption System
+## The Taint System
 
-Corruption is a **rare, persistent effect** applied by specific roles.
+Taint is a **rare, persistent effect** applied by specific roles.
 
 ### Rules
 
-- At the start of the game, **Saboteur** is armed to apply corruption.
-- When Saboteur is used while armed, the executor becomes **corrupted**.
-- Only one active corruption from Saboteur may exist at a time.
-- After applying corruption, Saboteur must regain access to the facilitator through another received power to re-arm corruption.
-- **Purifier** removes corruption from a player by taking it onto its own user.
-- **Exorcist** removes corruption from the game entirely if it correctly identifies a corrupted player.
+- At the start of the game, **Spoofer** is armed to apply taint.
+- When Spoofer is used while armed, the executor becomes **tainted**.
+- Only one active taint from Spoofer may exist at a time.
+- After applying taint, Spoofer must regain access to the Operator through another received program to re-arm taint.
+- **Sink** removes taint from a player by taking it onto its own user.
+- **Purge** removes taint from the game entirely if it correctly identifies a tainted player.
 
 ### Effects
 
 Examples include:
 
-- log identity distortion
+- trace identity distortion
 - action outcome distortion
 
 ### Design Intent
 
-Corruption should:
+Taint should:
 
 - create doubt
 - be traceable through reasoning
@@ -275,99 +275,99 @@ Corruption should:
 
 ---
 
-## The Saboteur
+## The Spoofer
 
-The Saboteur is a role that may belong to either faction.
+The Spoofer is a role that may belong to either faction.
 
-### Power
+### Program
 
 - Provides a useful effect, such as an identity check.
-- If Saboteur currently controls corruption, the **executor becomes corrupted**.
+- If Spoofer is armed, the **executor becomes tainted**.
 
 ### Constraints
 
-- Saboteur begins the game armed.
-- Only one active corruption from this role may exist at a time.
-- After applying corruption, Saboteur must receive another power and access the facilitator to re-arm.
+- Spoofer begins the game armed.
+- Only one active taint from this role may exist at a time.
+- After applying taint, Spoofer must receive another program and access the Operator to re-arm.
 
 ### Design Intent
 
-- The Saboteur must participate in the trust network.
-- Corruption is intentional, targeted, and contestable.
+- The Spoofer must participate in the trust network.
+- Taint is intentional, targeted, and contestable.
 
 ---
 
-## The Purifier
+## The Sink
 
-The Purifier is a role that may belong to either faction.
+The Sink is a role that may belong to either faction.
 
-### Power
+### Program
 
-- Removes corruption from a target player by taking it onto the user.
+- Removes taint from a target player by taking it onto the user.
 
 ### Constraints
 
-- Purifier does not destroy corruption.
-- If the target is not corrupted, the effect fails.
+- Sink does not destroy taint.
+- If the target is not tainted, the effect fails.
 
 ### Design Intent
 
-- The Purifier keeps corruption in circulation instead of solving it outright.
+- The Sink keeps taint in circulation instead of solving it outright.
 - It creates strategic risk for anyone who chooses to use it.
 
 ---
 
-## The Exorcist
+## The Purge
 
-The Exorcist is a role that may belong to either faction.
+The Purge is a role that may belong to either faction.
 
-### Power
+### Program
 
-- Permanently removes corruption from a target player if that target is currently corrupted.
+- Permanently removes taint from a target player if that target is currently tainted.
 
 ### Constraints
 
-- If the target is not corrupted, the effect fails.
-- This role purges corruption instead of transferring it.
+- If the target is not tainted, the effect fails.
+- This role purges taint instead of transferring it.
 
 ### Design Intent
 
-- The Exorcist provides a true answer to corruption.
+- The Purge provides a true answer to taint.
 - It rewards correct identification rather than merely shifting risk.
 
 ---
 
-## Core Information Roles
+## Core Truth Roles
 
 These roles provide **strong, binary truth**.
 
-### Witness
+### Ghost Pair
 
 - Learns whether 2 selected players are on the same faction.
 
-### Census
+### Registry
 
 - Learns a player's role.
 
-### Sentinel
+### Handshake
 
 - Learns whether a player is on the same faction.
 
-### Tracker
+### Signal Trace
 
-- Learns whether a player is the progressor.
+- Learns whether a player is the Architect.
 
-### Diagnostician
+### Scanner
 
-- Learns whether a player is corrupted.
+- Learns whether a player is tainted.
 
-### Redirector
+### Rerouter
 
-- Marks a player so that the next time they execute a power, that power's target becomes the progressor.
+- Marks a player so that the next time they run a program, that program's target becomes the Architect.
 
 ---
 
-## Endgame Role
+## Bootstrap Role
 
 At least one role should exist that can:
 
@@ -383,8 +383,8 @@ This role must:
 
 ## Endgame (Draft)
 
-- The game ends after a fixed number of structures are built. Recommended: 5 to 7.
-- The faction with the majority of aligned structures wins.
+- The game ends after a fixed number of nodes are built. Recommended: 5 to 7.
+- The faction with the majority of aligned nodes wins.
 
 ### Optional Rule
 
@@ -399,7 +399,7 @@ The game is designed so that:
 
 - truth exists, but must be **socially validated**
 - trust is necessary, but **dangerous**
-- power is centralized, but **contestable**
+- control is centralized, but **contestable**
 - information is strong, but **fragile**
 
 Players should feel:
@@ -412,10 +412,10 @@ Players should feel:
 
 ## Future Iteration Areas
 
-- structure effects and balance
+- node effects and balance
 - role distribution and count
-- progressor reassignment mechanics
-- log query design
+- Architect reassignment mechanics
+- trace-log query design
 - endgame conditions
 
 ---

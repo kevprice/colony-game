@@ -1,54 +1,54 @@
-# Structures (v0.1)
+# Nodes (v0.1)
 
-Structures represent permanent changes to the colony.
+Nodes represent permanent changes to the network.
 
-- All structures are known to players at the start.
-- Each structure is aligned to Red or Green.
+- All nodes are known to players at the start.
+- Each node is aligned to Red or Green.
 - Each build shifts the game state and win condition.
 
 ---
 
-## Red-Aligned Structures
+## Red-Aligned Nodes
 
-### Logging
+### Trace Archive
 
 **Effect:**
 
-- Enables access to the system log via powers.
+- Enables access to the trace log via programs.
 
-**Log Entries Include:**
+**Trace Entries Include:**
 
-- executor, or who used the power
-- source, or whose power was used
-- power name
-- corruption status of the executor
-- progressor status of the executor
+- executor, or who ran the program
+- source, or whose program was run
+- program name
+- taint status of the executor
+- Architect status of the executor
 
 **Design Notes:**
 
-- Log access must be mediated by powers.
-- Players do not see the full log by default.
+- Trace-log access must be mediated by programs.
+- Players do not see the full trace log by default.
 
 ---
 
-### Security
+### Alarm Mesh
 
 **Effect:**
 
-- The facilitator may announce: `An action has occurred`.
+- The Operator may announce: `An action has occurred`.
 
 **Design Notes:**
 
 - Does not reveal who or what.
-- Increases tension and timing awareness.
+- Increases tension and timing awareness across the network.
 
 ---
 
-### Detention
+### Lockout
 
 **Effect:**
 
-- The progressor may restrict a player from receiving powers temporarily.
+- The Architect may restrict a player from receiving programs temporarily.
 
 **Design Notes:**
 
@@ -57,40 +57,40 @@ Structures represent permanent changes to the colony.
 
 ---
 
-## Green-Aligned Structures
+## Green-Aligned Nodes
 
-### Diplomacy
+### Consensus Patch
 
 **Effect:**
 
 - Progression requires:
-  - the progressor
+  - the Architect
   - and one additional approving player
 
 **Design Notes:**
 
 - Creates a multi-party trust requirement.
-- Slows down progression.
+- Slows down progression in exchange for shared control.
 
 ---
 
-### Encryption
+### Cipher Veil
 
 **Effect:**
 
-- Log queries return incomplete data:
+- Trace-log queries return incomplete data:
   - one field is hidden or obscured
 
 **Design Notes:**
 
-- Should not fully block log access.
-- Creates ambiguity in interpretation.
+- Should not fully block trace-log access.
+- Creates ambiguity in interpretation while preserving access.
 
 ---
 
-## Structure Design Guidelines
+## Node Design Guidelines
 
-Each structure should:
+Each node should:
 
 - shift the balance toward a faction
 - modify how information flows or actions resolve
@@ -98,7 +98,7 @@ Each structure should:
 
 Avoid:
 
-- neutral structures
+- neutral nodes
 - purely passive effects
 - effects that remove player agency
 
@@ -106,10 +106,10 @@ Avoid:
 
 ## Future Expansion
 
-Possible future structures:
+Possible future nodes:
 
-- Advanced Logging, for full traceability
-- Distributed Control, for multiple progressors
-- Immunity Layers, for temporary protection from effects
+- Deep Archive, for full traceability
+- Distributed Core, for multiple Architects
+- Shield Layers, for temporary protection from effects
 
 These should be introduced cautiously and tested incrementally.
