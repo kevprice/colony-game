@@ -21,7 +21,7 @@ Nodes represent permanent changes to the network.
 - executor, or who ran the program
 - source, or whose program was run
 - program name
-- taint status of the executor
+- corruption status of the executor
 - Architect status of the executor
 
 **Design Notes:**

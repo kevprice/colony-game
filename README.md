@@ -17,7 +17,7 @@ The game is resolved through:
 ## Core Principles
 
 1. **Grid truth is absolute**
-   - The Operator always provides correct information, unless taint is applied.
+   - The Operator always provides correct information, unless corruption is applied.
    - All program results are truthful.
 2. **Player communication is unverified**
    - Players may lie freely.
@@ -119,7 +119,7 @@ Players win if the final network state favors their faction.
   - 1 **Purge**
   - 1 **Bootstrap** role, if testing endgame
   - at least 1 role with **boot-sequence information**
-- Roles that move progression or taint should be rare. In most tests, include at most one of each.
+- Roles that move progression or corruption should be rare. In most tests, include at most one of each.
 
 ### Operator
 
@@ -129,7 +129,7 @@ Players win if the final network state favors their faction.
   - maintain the trace log
   - track:
     - Architect
-    - taint
+    - corruption
     - network state
 
 ### Initial State
@@ -232,7 +232,7 @@ Each trace entry contains:
 - executor, or who ran the program
 - source, or whose program was run
 - program name
-- whether the executor was **tainted**
+- whether the executor was **corrupted**
 - whether the executor was the **Architect**
 
 Players may gain access to the trace log via programs.
@@ -245,18 +245,18 @@ Trace-log access is:
 
 ---
 
-## The Taint System
+## The Corruption System
 
-Taint is a **rare, persistent effect** applied by specific roles.
+Corruption is a **rare, persistent effect** applied by specific roles.
 
 ### Rules
 
-- At the start of the game, **Spoofer** is armed to apply taint.
-- When Spoofer is used while armed, the executor becomes **tainted**.
-- Only one active taint from Spoofer may exist at a time.
-- After applying taint, Spoofer must regain access to the Operator through another received program to re-arm taint.
-- **Sink** removes taint from a player by taking it onto its own user.
-- **Purge** removes taint from the game entirely if it correctly identifies a tainted player.
+- At the start of the game, **Spoofer** is armed to apply corruption.
+- When Spoofer is used while armed, the executor becomes **corrupted**.
+- Only one active corruption from Spoofer may exist at a time.
+- After applying corruption, Spoofer must regain access to the Operator through another received program to re-arm corruption.
+- **Sink** removes corruption from a player by taking it onto its own user.
+- **Purge** removes corruption from the game entirely if it correctly identifies a corrupted player.
 
 ### Effects
 
@@ -267,7 +267,7 @@ Examples include:
 
 ### Design Intent
 
-Taint should:
+Corruption should:
 
 - create doubt
 - be traceable through reasoning
@@ -282,18 +282,18 @@ The Spoofer is a role that may belong to either faction.
 ### Program
 
 - Provides a useful effect, such as an identity check.
-- If Spoofer is armed, the **executor becomes tainted**.
+- If Spoofer is armed, the **executor becomes corrupted**.
 
 ### Constraints
 
 - Spoofer begins the game armed.
-- Only one active taint from this role may exist at a time.
-- After applying taint, Spoofer must receive another program and access the Operator to re-arm.
+- Only one active corruption from this role may exist at a time.
+- After applying corruption, Spoofer must receive another program and access the Operator to re-arm.
 
 ### Design Intent
 
 - The Spoofer must participate in the trust network.
-- Taint is intentional, targeted, and contestable.
+- Corruption is intentional, targeted, and contestable.
 
 ---
 
@@ -303,16 +303,16 @@ The Sink is a role that may belong to either faction.
 
 ### Program
 
-- Removes taint from a target player by taking it onto the user.
+- Removes corruption from a target player by taking it onto the user.
 
 ### Constraints
 
-- Sink does not destroy taint.
-- If the target is not tainted, the effect fails.
+- Sink does not destroy corruption.
+- If the target is not corrupted, the effect fails.
 
 ### Design Intent
 
-- The Sink keeps taint in circulation instead of solving it outright.
+- The Sink keeps corruption in circulation instead of solving it outright.
 - It creates strategic risk for anyone who chooses to use it.
 
 ---
@@ -323,16 +323,16 @@ The Purge is a role that may belong to either faction.
 
 ### Program
 
-- Permanently removes taint from a target player if that target is currently tainted.
+- Permanently removes corruption from a target player if that target is currently corrupted.
 
 ### Constraints
 
-- If the target is not tainted, the effect fails.
-- This role purges taint instead of transferring it.
+- If the target is not corrupted, the effect fails.
+- This role purges corruption instead of transferring it.
 
 ### Design Intent
 
-- The Purge provides a true answer to taint.
+- The Purge provides a true answer to corruption.
 - It rewards correct identification rather than merely shifting risk.
 
 ---
@@ -359,7 +359,7 @@ These roles provide **strong, binary truth**.
 
 ### Scanner
 
-- Learns whether a player is tainted.
+- Learns whether a player is corrupted.
 
 ### Rerouter
 

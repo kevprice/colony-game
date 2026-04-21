@@ -36,7 +36,7 @@ Core questions include:
 
 - who is on my team?
 - who is the Architect?
-- who is tainted?
+- who is corrupted?
 - what action actually happened?
 
 Do not add roles that rely on:
@@ -236,7 +236,7 @@ These roles should reveal information that is not already obvious from watching 
 - The next time they appear in the trace log, one field is incorrect:
   - identity
   - source
-  - or taint status
+  - or corruption status
 
 **Design Notes:**
 
@@ -245,7 +245,7 @@ These roles should reveal information that is not already obvious from watching 
 
 ---
 
-### Taint Roles
+### Corruption Roles
 
 #### Spoofer
 
@@ -257,17 +257,17 @@ These roles should reveal information that is not already obvious from watching 
 
 **Hidden Effect:**
 
-- The executor becomes **tainted** if the Spoofer is armed.
+- The executor becomes **corrupted** if the Spoofer is armed.
 
 **Constraints:**
 
-- Only one active taint from this role may exist at a time.
+- Only one active corruption from this role may exist at a time.
 - Spoofer begins the game armed.
-- After taint is applied, Spoofer must receive another program and access the Operator to re-arm taint.
+- After corruption is applied, Spoofer must receive another program and access the Operator to re-arm corruption.
 
 **Design Notes:**
 
-- Taint applies to the executor, not the target.
+- Corruption applies to the executor, not the target.
 - This program should appear useful and desirable.
 - Delegation and trust remain central to re-use.
 
@@ -280,12 +280,12 @@ These roles should reveal information that is not already obvious from watching 
 **Program:**
 
 - Select a player.
-- If they are tainted, remove taint from them and take that taint onto yourself.
+- If they are corrupted, remove corruption from them and take that corruption onto yourself.
 
 **Design Notes:**
 
-- This role pulls taint off another player by acting as a dirty drain for the Grid.
-- It keeps taint in circulation rather than destroying it.
+- This role pulls corruption off another player by acting as a dirty drain for the Grid.
+- It keeps corruption in circulation rather than destroying it.
 - It creates strategic risk for the user and for anyone trusting them afterward.
 
 ---
@@ -297,12 +297,12 @@ These roles should reveal information that is not already obvious from watching 
 **Program:**
 
 - Select a player.
-- If they are currently tainted, remove that taint from the game entirely.
+- If they are currently corrupted, remove that corruption from the game entirely.
 
 **Design Notes:**
 
 - This is a true purge rather than a transfer.
-- If used on a non-tainted player, it fails.
+- If used on a non-corrupted player, it fails.
 - Keep this role distinct from Sink in both rules and table language.
 
 ---
@@ -314,7 +314,7 @@ These roles should reveal information that is not already obvious from watching 
 **Program:**
 
 - Select a player.
-- Learn: `Are they currently tainted? (Yes / No)`
+- Learn: `Are they currently corrupted? (Yes / No)`
 
 ---
 
@@ -365,7 +365,7 @@ When proposing new roles, prefer roles that give:
 
 - direct faction truth
 - direct Architect truth
-- direct taint truth
+- direct corruption truth
 - direct action or trace-log truth
 - clear disruption of one of the above
 
