@@ -50,6 +50,12 @@ The game runs continuously with no fixed rounds.
 - Players may not target themselves with any power.
 - All powers must target another player unless a role explicitly states otherwise.
 
+### Global Power-Handling Rules
+
+- A player may hold at most 1 power belonging to another player at a time.
+- A power received for execution may not be transferred to a third player.
+- After visiting the facilitator and resolving a power, the executor must immediately return that power to its owner.
+
 ---
 
 ## Roles, Powers, and Factions
@@ -110,6 +116,7 @@ Players win if the final colony state favors their faction.
   - 1 **Saboteur**
   - 1 **Redirector**
   - 1 **Purifier**
+  - 1 **Exorcist**
   - 1 **Endgame role**, if testing endgame
   - at least 1 role with **starting information**
 - Roles that move progression or corruption should be rare. In most tests, include at most one of each.
@@ -244,11 +251,12 @@ Corruption is a **rare, persistent effect** applied by specific roles.
 
 ### Rules
 
-- There is a single corruption line in the game.
-- At the start of the game, **Saboteur** controls corruption.
-- Corruption alternates between being controlled by a role and being attached to a corrupted player.
-- If the role currently controlling corruption has its power executed, the executor becomes **corrupted**.
-- If a player is currently corrupted and either **Saboteur** or **Purifier** has its power executed, corruption returns from that player to that role's control after the power resolves.
+- At the start of the game, **Saboteur** is armed to apply corruption.
+- When Saboteur is used while armed, the executor becomes **corrupted**.
+- Only one active corruption from Saboteur may exist at a time.
+- After applying corruption, Saboteur must regain access to the facilitator through another received power to re-arm corruption.
+- **Purifier** removes corruption from a player by taking it onto its own user.
+- **Exorcist** removes corruption from the game entirely if it correctly identifies a corrupted player.
 
 ### Effects
 
@@ -278,8 +286,9 @@ The Saboteur is a role that may belong to either faction.
 
 ### Constraints
 
-- Saboteur begins the game controlling corruption.
-- If a player is currently corrupted and Saboteur's power is used, Saboteur reclaims control of corruption after resolving its effect.
+- Saboteur begins the game armed.
+- Only one active corruption from this role may exist at a time.
+- After applying corruption, Saboteur must receive another power and access the facilitator to re-arm.
 
 ### Design Intent
 
@@ -294,18 +303,37 @@ The Purifier is a role that may belong to either faction.
 
 ### Power
 
-- Provides a useful effect, such as an exact faction check.
-- If Purifier currently controls corruption, the **executor becomes corrupted**.
+- Removes corruption from a target player by taking it onto the user.
 
 ### Constraints
 
-- Purifier does not begin the game controlling corruption.
-- If a player is currently corrupted and Purifier's power is used, Purifier reclaims control of corruption after resolving its effect.
+- Purifier does not destroy corruption.
+- If the target is not corrupted, the effect fails.
 
 ### Design Intent
 
-- The Purifier is not a simple counter to Saboteur.
-- It competes with Saboteur to control when and how corruption re-enters the game.
+- The Purifier keeps corruption in circulation instead of solving it outright.
+- It creates strategic risk for anyone who chooses to use it.
+
+---
+
+## The Exorcist
+
+The Exorcist is a role that may belong to either faction.
+
+### Power
+
+- Permanently removes corruption from a target player if that target is currently corrupted.
+
+### Constraints
+
+- If the target is not corrupted, the effect fails.
+- This role purges corruption instead of transferring it.
+
+### Design Intent
+
+- The Exorcist provides a true answer to corruption.
+- It rewards correct identification rather than merely shifting risk.
 
 ---
 

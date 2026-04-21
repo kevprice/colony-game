@@ -14,13 +14,47 @@ Global targeting rule:
 - Players may not target themselves with any power.
 - All powers must target another player unless a role explicitly states otherwise.
 
+Global power-handling rules:
+
+- A player may hold at most 1 power belonging to another player at a time.
+- A power received for execution may not be transferred to a third player.
+- After visiting the facilitator and resolving a power, the executor must immediately return that power to its owner.
+
 ---
 
-## Starting Information Roles
+## Role Curation Standard
 
-These roles receive information during setup, before open discussion begins.
+Roles should satisfy all of the following where possible:
 
-### Witness
+- provide real and direct information
+- affect a core question in the game
+- avoid weak, partial, or statistical output
+- avoid reproducing information that is already mostly available from room observation
+- avoid narrow edge-case powers that rarely matter
+
+Core questions include:
+
+- who is on my team?
+- who is the progressor?
+- who is corrupted?
+- what action actually happened?
+
+Do not add roles that rely on:
+
+- partial information such as `2+`, `one of`, or `likely`
+- mirrored duplicates with no meaningful functional difference
+- public revelation mechanics
+- powers that mostly reproduce what players can already infer by watching who goes to the facilitator
+
+---
+
+## Curated Active Pool
+
+This is the current role pool worth keeping in the repository.
+
+### Setup Information Roles
+
+#### Witness
 
 **Faction:** Variable, assigned during setup
 
@@ -42,12 +76,11 @@ These roles receive information during setup, before open discussion begins.
 
 - This role creates an immediate social anchor without creating a confirmed alliance.
 - The tension comes from knowing a role match while still having to infer that player's faction.
-- Witnesses also begin with partial faction knowledge about Census players, giving them real but incomplete setup information.
-- The active power is relational rather than self-referential, so it does not duplicate Sentinel.
+- Witnesses also begin with partial faction knowledge about Census players.
 
 ---
 
-### Census
+#### Census
 
 **Faction:** Variable, assigned during setup
 
@@ -66,73 +99,44 @@ These roles receive information during setup, before open discussion begins.
 **Design Notes:**
 
 - Census is an information source for Witness during setup, not an information receiver.
-- Census still needs a strong standard gameplay power so the role remains desirable to pass and use.
+- Census has a strong direct information power during normal play.
 
 ---
 
-## Disruption Roles
+### Faction Truth Roles
 
-### Saboteur
+Keep only one direct faction-check family in active use at a time.
 
-**Faction:** Variable, assigned during setup
-
-**Power:**
-
-- Learn the role of a target player.
-
-**Corruption Rules:**
-
-- Saboteur and Purifier contest control of a single corruption line.
-- Saboteur begins the game controlling corruption.
-- If Saboteur currently controls corruption when this power is executed, the executor becomes **corrupted**.
-- If a player is currently corrupted when this power is executed, corruption returns from that player to Saboteur's control after the power resolves.
-
-**Design Notes:**
-
-- Corruption applies to the **executor**, not the target.
-- This power should appear useful and desirable.
-- Saboteur is defined by starting with corruption, not by having a unique corruption mechanic.
-
----
-
-### Obfuscator
+#### Sentinel
 
 **Faction:** Variable, assigned during setup
 
 **Power:**
 
 - Select a player.
-- The next time they appear in the log, one field is incorrect:
-  - identity
-  - source
-  - or corruption status
+- Learn: `Are they on your faction? (Yes / No)`
 
 **Design Notes:**
 
-- Must not remove the log entry entirely.
-- Should create doubt, not erase information.
+- This is the simplest direct faction-check role.
+- Do not duplicate this role family with near-identical alternatives.
 
 ---
 
-### Controller
+### Progressor Roles
+
+#### Tracker
 
 **Faction:** Variable, assigned during setup
 
 **Power:**
 
 - Select a player.
-- Their next power use has no effect.
-
-**Design Notes:**
-
-- The facilitator should return: `No effect` or `Action failed`.
-- The result should not reveal that blocking occurred.
+- Learn: `Are they the current progressor? (Yes / No)`
 
 ---
 
-## Control Roles
-
-### Redirector
+#### Redirector
 
 **Faction:** Variable, assigned during setup
 
@@ -152,35 +156,158 @@ These roles receive information during setup, before open discussion begins.
 
 - This role changes progression indirectly through player behavior rather than by naming the new progressor outright.
 - It creates uncertainty, social pressure, and counterplay around who receives powers and who they choose to target.
-- Include at most 1 Redirector in a test setup.
 
 ---
 
-## Information Roles
+### Log and Action Truth Roles
 
-### Sentinel
+These roles should reveal information that is not already obvious from watching the room.
+
+#### Full Auditor
 
 **Faction:** Variable, assigned during setup
 
 **Power:**
 
 - Select a player.
-- Learn: `Are they on your faction? (Yes / No)`
+- Learn:
+  - what power they last used
+  - whose power it was
 
 ---
 
-### Tracker
+#### Target Revealer
 
 **Faction:** Variable, assigned during setup
 
 **Power:**
 
 - Select a player.
-- Learn: `Are they the current progressor? (Yes / No)`
+- Learn who they last targeted.
 
 ---
 
-### Diagnostician
+#### Log Snapshot
+
+**Faction:** Variable, assigned during setup
+
+**Power:**
+
+- Learn the full details of the most recent log entry.
+
+---
+
+#### Action Confirmation
+
+**Faction:** Variable, assigned during setup
+
+**Power:**
+
+- Select a player.
+- Learn: `Did their last action succeed? (Yes / No)`
+
+---
+
+### Disruption Roles
+
+#### Controller
+
+**Faction:** Variable, assigned during setup
+
+**Power:**
+
+- Select a player.
+- Their next power use has no effect.
+
+**Design Notes:**
+
+- The facilitator should return: `No effect` or `Action failed`.
+- The result should not reveal that blocking occurred.
+
+---
+
+#### Obfuscator
+
+**Faction:** Variable, assigned during setup
+
+**Power:**
+
+- Select a player.
+- The next time they appear in the log, one field is incorrect:
+  - identity
+  - source
+  - or corruption status
+
+**Design Notes:**
+
+- Must not remove the log entry entirely.
+- Should create doubt, not erase information.
+
+---
+
+### Corruption Roles
+
+#### Saboteur
+
+**Faction:** Variable, assigned during setup
+
+**Power:**
+
+- Learn the role of a target player.
+
+**Hidden Effect:**
+
+- The executor becomes **corrupted** if the Saboteur is armed.
+
+**Constraints:**
+
+- Only one active corruption from this role may exist at a time.
+- Saboteur begins the game armed.
+- After corruption is applied, Saboteur must receive another power and access the facilitator to re-arm corruption.
+
+**Design Notes:**
+
+- Corruption applies to the executor, not the target.
+- This power should appear useful and desirable.
+- Delegation and trust remain central to re-use.
+
+---
+
+#### Purifier
+
+**Faction:** Variable, assigned during setup
+
+**Power:**
+
+- Select a player.
+- If they are corrupted, remove corruption from them and take that corruption onto yourself.
+
+**Design Notes:**
+
+- This role removes corruption from another player by taking it onto its own user.
+- It keeps corruption in circulation rather than destroying it.
+- It creates strategic risk for the user and for anyone trusting them.
+
+---
+
+#### Exorcist
+
+**Faction:** Variable, assigned during setup
+
+**Power:**
+
+- Select a player.
+- If they are currently corrupted, remove that corruption from the game entirely.
+
+**Design Notes:**
+
+- This is a true purge rather than a transfer.
+- If used on a non-corrupted player, it fails.
+- Keep this role distinct from Purifier in both rules and play language.
+
+---
+
+#### Diagnostician
 
 **Faction:** Variable, assigned during setup
 
@@ -191,35 +318,9 @@ These roles receive information during setup, before open discussion begins.
 
 ---
 
-## Recovery Roles
+### Special Roles
 
-### Purifier
-
-**Faction:** Variable, assigned during setup
-
-**Power:**
-
-- Learn the faction of a target player.
-
-**Corruption Rules:**
-
-- Saboteur and Purifier contest control of a single corruption line.
-- Purifier does not begin the game controlling corruption.
-- If Purifier currently controls corruption when this power is executed, the executor becomes **corrupted**.
-- If a player is currently corrupted when this power is executed, corruption returns from that player to Purifier's control after the power resolves.
-
-**Design Notes:**
-
-- Purifier has a game-useful information power even when not controlling corruption.
-- Purifier can steal corruption back and then function as the active corruption role.
-- The difference between Saboteur and Purifier is primarily who begins with control of corruption.
-- Include at most 1 Purifier in a test setup.
-
----
-
-## Special Roles
-
-### Advocate (Endgame Role)
+#### Advocate (Endgame Role)
 
 **Faction:** Variable, assigned during setup
 
@@ -243,25 +344,36 @@ These roles receive information during setup, before open discussion begins.
 
 ---
 
-## Role Design Guidelines
+## Deprecated or Removed Role Families
 
-When adding new roles, each role should:
+These role ideas should not be kept in the active pool.
 
-- answer a key question
-- distort a key question
-- or block access to a key question
+- `Inverter`: duplicate of direct faction-checking in practice
+- `Cluster Analyst`: partial or statistical output
+- `Load Monitor`: too niche and indirect
+- `Progress Verifier`: too situational and unclear in normal play
+- `Source Revealer`: too weak because room observation already gives much of this value
+- `Exposure`: relies on public revelation mechanics
+- `Split Vision`: resolves too easily in practice
+- `Known Anchor`, `Opposition Anchor`, and similar comparator overlaps: treat as one family and keep only the strongest version
 
-Roles should not assume faction alignment. Faction should remain a separate assignment unless a specific variant explicitly says otherwise.
+---
 
-Avoid:
+## Role Design Guidance
 
-- weak or redundant roles
-- roles that provide vague or non-actionable information
-- too many control or corruption-moving roles in the same setup
+When proposing new roles, prefer roles that give:
 
-All powers must:
+- direct faction truth
+- direct progressor truth
+- direct corruption truth
+- direct action or log truth
+- clear disruption of one of the above
 
-- be desirable enough to be passed
-- create meaningful decisions when used
+Avoid roles that:
 
-Rare systemic roles such as **Saboteur**, **Purifier**, and **Redirector** should usually appear at most once each in a test setup.
+- duplicate another role except for setup wrapper
+- reveal information already strongly visible in the room
+- produce weak, partial, or statistical output
+- only matter in rare edge cases
+
+Rare systemic roles such as **Saboteur**, **Purifier**, **Exorcist**, and **Redirector** should usually appear at most once each in a test setup.
