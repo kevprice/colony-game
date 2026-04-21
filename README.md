@@ -54,7 +54,14 @@ The game runs continuously with no fixed rounds.
 
 - A player may hold at most 1 program belonging to another player at a time.
 - A program received for execution may not be forwarded to a third player.
+- A player may not run the same program twice in a row.
 - After visiting the Operator and resolving a program, the executor must immediately return that program to its owner.
+
+### Key Terms
+
+- **Executor**: the player currently running a program through the Operator.
+- **Source**: the player who owns the program being run.
+- **Target**: the player chosen by the executor to be affected by that program.
 
 ---
 
