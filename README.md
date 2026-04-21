@@ -73,6 +73,7 @@ Each player is assigned:
 - **Role**: defines their program and any passive abilities
 
 Roles and factions are assigned independently. A player may receive any role with either faction.
+Each role has an associated same-named program. When ambiguity matters, these rules refer to `the <Role> role` and `the <Role> program` separately.
 
 ### Factions
 
@@ -258,12 +259,12 @@ Corruption is a **rare, persistent effect** applied by specific roles.
 
 ### Rules
 
-- At the start of the game, **Spoofer** is armed to apply corruption.
-- When Spoofer is used while armed, the executor becomes **corrupted**.
-- Only one active corruption from Spoofer may exist at a time.
-- After applying corruption, Spoofer must regain access to the Operator through another received program to re-arm corruption.
-- **Sink** removes corruption from a player by taking it onto its own user.
-- **Purge** removes corruption from the game entirely if it correctly identifies a corrupted player.
+- At the start of the game, the **Spoofer role** is armed to apply corruption.
+- When the **Spoofer program** is run while the Spoofer role is armed, the executor becomes **corrupted**.
+- Only one active corruption from the Spoofer role may exist at a time.
+- After applying corruption, the Spoofer role must regain access to the Operator through another received program to re-arm corruption.
+- The **Sink program** removes corruption from a player by taking it onto its own user.
+- The **Purge program** removes corruption from the game entirely if it correctly identifies a corrupted player.
 
 ### Effects
 
@@ -289,13 +290,13 @@ The Spoofer is a role that may belong to either faction.
 ### Program
 
 - Provides a useful effect, such as an identity check.
-- If Spoofer is armed, the **executor becomes corrupted**.
+- If the Spoofer role is armed, the **executor of the Spoofer program becomes corrupted**.
 
 ### Constraints
 
-- Spoofer begins the game armed.
+- The Spoofer role begins the game armed.
 - Only one active corruption from this role may exist at a time.
-- After applying corruption, Spoofer must receive another program and access the Operator to re-arm.
+- After applying corruption through the Spoofer program, the Spoofer role must receive another program and access the Operator to re-arm.
 
 ### Design Intent
 
@@ -310,7 +311,7 @@ The Sink is a role that may belong to either faction.
 
 ### Program
 
-- Removes corruption from a target player by taking it onto the user.
+- The Sink program removes corruption from a target player by taking it onto the user.
 
 ### Constraints
 
@@ -330,7 +331,7 @@ The Purge is a role that may belong to either faction.
 
 ### Program
 
-- Permanently removes corruption from a target player if that target is currently corrupted.
+- The Purge program permanently removes corruption from a target player if that target is currently corrupted.
 
 ### Constraints
 

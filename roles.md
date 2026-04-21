@@ -8,6 +8,7 @@ Each player is assigned:
 Faction and role are assigned independently. A player may receive any role with either faction.
 
 All roles provide a **program** that must be loaded into another player to execute.
+Each role has an associated same-named program. When ambiguity matters, these rules refer to `the <Role> role` and `the <Role> program` separately.
 
 Global targeting rule:
 
@@ -264,13 +265,13 @@ These roles should reveal information that is not already obvious from watching 
 
 **Hidden Effect:**
 
-- The executor becomes **corrupted** if the Spoofer is armed.
+- The executor becomes **corrupted** if the Spoofer role is armed.
 
 **Constraints:**
 
 - Only one active corruption from this role may exist at a time.
-- Spoofer begins the game armed.
-- After corruption is applied, Spoofer must receive another program and access the Operator to re-arm corruption.
+- The Spoofer role begins the game armed.
+- After corruption is applied through the Spoofer program, the Spoofer role must receive another program and access the Operator to re-arm corruption.
 
 **Design Notes:**
 
