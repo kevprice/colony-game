@@ -37,18 +37,18 @@ The game is resolved through:
 
 The game runs continuously with no fixed rounds.
 
-1. Players discuss, negotiate, and exchange programs.
-2. When Player A jacks a program into Player B:
+1. Players discuss, negotiate, and exchange programs. Their aim is to identify and control the Architect power and build the network in their own image.
+2. When Player A 'jacks' a program into Player B:
    - Player B must immediately go to the Operator.
    - Player B must run the program.
-3. The Operator resolves the program privately through the Grid.
+3. The Operator resolves the program privately and logs it.
 4. If Player B is the **Architect**, they may choose to advance the network by building a node.
 5. After a short delay, such as 2 to 3 minutes, the Operator announces any changes to the network state.
 
 ### Global Targeting Rule
 
 - Players may not target themselves with any program.
-- All programs must target another player unless a role explicitly states otherwise.
+- All programs must target another player or role unless a role explicitly states otherwise.
 
 ### Global Program-Handling Rules
 
@@ -88,7 +88,7 @@ Players win if the final network state favors their faction.
 
 ### The Architect
 
-- One player is the **current Architect**.
+- One player is the **current Architect**. This is a state seperate to the player's role and must be discovered.
 - The Architect:
   - remains in that role until changed
   - may advance the network when running a program
@@ -347,7 +347,7 @@ The Purge is a role that may belong to either faction.
 
 ## Core Truth Roles
 
-These roles provide **strong, binary truth**.
+These roles provide **strong, binary truth** returning either True or False from the Operator.
 
 ### Ghost Pair
 
