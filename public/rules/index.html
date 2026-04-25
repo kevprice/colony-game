@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Colony Rules</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main>
+      <header class="panel">
+        <p class="eyebrow">Colony Grid</p>
+        <h1>Rules and Setup</h1>
+        <p class="small">
+          A social deduction in a broken network. Players jack anonymous programs into each other, the Terminal resolves
+          them through the Grid, and hidden faction pressure decides who controls the system.
+        </p>
+      </header>
+
+      <section class="panel">
+        <h2>Setup</h2>
+        <div class="grid two">
+          <div>
+            <p><strong>Recommended players:</strong> 8-10</p>
+            <p><strong>Minimum:</strong> 6</p>
+            <p><strong>Maximum:</strong> 12</p>
+            <p><strong>Roles:</strong> Use the role pool generated for the session.</p>
+          </div>
+          <div>
+            <p><strong>Physical materials:</strong> one player registration card and one power card for each player.</p>
+            <p><strong>Terminal:</strong> the shared public machine where all programs are run.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Key Terms</h2>
+        <p><strong>Executor:</strong> the player currently running a program at the Terminal.</p>
+        <p><strong>Source:</strong> the player who owns the scanned power card.</p>
+        <p><strong>Target:</strong> the player chosen to be affected by that program.</p>
+        <p><strong>Architect:</strong> a hidden role state. A player learns they are currently an Architect when the Terminal tells them after a run, or when another power reveals it.</p>
+        <p><strong>Grid effect:</strong> an additional persistent rule installed by an Architect.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Boot Sequence</h2>
+        <ol>
+          <li>Host creates a session and prints the registration cards, power cards, and role reference sheet.</li>
+          <li>Each player takes one registration card and its matching power card.</li>
+          <li>Each player opens the registration page, enters a handle, and scans their registration QR.</li>
+          <li>The Grid privately reveals that player's faction and role. Both are randomly assigned.</li>
+          <li>Players keep the power card anonymous as they may lie about what it does to other players.</li>
+          <li>Once everyone is registered, normal play begins.</li>
+        </ol>
+      </section>
+
+      <section class="panel">
+        <h2>Core Rules</h2>
+        <ul>
+          <li>Players cannot run their own programs, but they can run the programs of any other player with that player's agreement.</li>
+          <li>Players may lie about what program they are handing over.</li>
+          <li>To run a program, go to the Terminal, identify yourself with your player registration card, then show the acquired power card and follow the on-screen prompts.</li>
+          <li>Players may not target themselves with any used power unless a rule explicitly says otherwise.</li>
+          <li>A player may hold only one other player’s power card at a time.</li>
+          <li>A received power card may not be passed on to a third player.</li>
+          <li>After receiving another player's power card, the player must go to the Terminal immediately, or resolve it as soon as the Terminal is free.</li>
+          <li>A player may not accept another player's power card with the intention of not using it.</li>
+          <li>After visiting the Terminal, the executor must immediately return the power card to its owner.</li>
+          <li>An executor may not run the same program twice in a row.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>What to find out</h2>
+        <ul>
+          <li>Other players' roles so you can understand their powers.</li>
+          <li>Other players' factions so you know who is on your team.</li>
+          <li>Who is the Architect so you can stop them from scoring or move that state to someone in your faction.</li>
+          <li>Trace-log outputs become corrupted and cannot be trusted while the executor is corrupted.</li>
+          <li>Where the corruption currently is.</li>
+        </ul>
+      </section>
+
+
+      <section class="panel">
+        <h2>Corruption</h2>
+        <ul>
+          <li>Corruption is a state of a player that is placed upon them by another player</li>
+          <li>Corruption gives false information to the corrupted executor.</li>
+          <li><code>Yes</code> becomes <code>No</code>, and <code>No</code> becomes <code>Yes</code>, where possible.</li>
+          <li>Trace-log outputs become corrupted and cannot be trusted while the executor is corrupted.</li>
+          <li>A player is not told if they are corrupted when using a program unless there is a specific power in effect.</li>
+          <li>If a corrupted Architect installs a new Grid effect, the point for that install goes to the other faction.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Game Loop</h2>
+        <ol>
+          <li>Players talk, bluff, negotiate, and hand power cards to each other.</li>
+          <li>The receiving player, the executor, walks to the Terminal and identifies themselves, or waits until the Terminal is free.</li>
+          <li>The executor scans their registration card and then the power card at the Terminal.</li>
+          <li>The Terminal prompts for any targets or selections and resolves the real program.</li>
+          <li>If the executor is currently an Architect, they may install one Grid effect and gain a point for their faction.</li>
+        </ol>
+      </section>
+
+      <section class="panel">
+        <h2>Architect Install Rule</h2>
+        <p>
+          An Architect cannot use the same power twice to install a new Grid effect. But they may use other players' power cards in line with the normal rules of the game.
+        </p>
+        <p class="small">
+          Example: if an Architect installs using a Registry power card, their future installs must come from a different power or a different Architect could use the same power.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Winning</h2>
+        <p>
+          Every time an Architect installs an effect, that Architect’s faction scores 1 point (unless the Architect is corrupted). The first faction to hit the
+          session victory threshold wins immediately.
+        </p>
+        <p class="small">Typical thresholds: 4 points for 6-7 players, 5 points for 8-10 players, 6 points for 11-12 players.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Useful Links</h2>
+        <div class="row">
+          <a href="/">Mainframe Home</a>
+          <a href="/printables/roles" target="_blank">Printable Role / Program Sheet</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

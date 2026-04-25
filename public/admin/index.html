@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Colony Admin</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Admin Console</h1>
+      <div class="grid two">
+        <section class="panel">
+          <h2>Session</h2>
+          <pre id="session"></pre>
+          <p><a id="printables" target="_blank">Open printables</a></p>
+        </section>
+        <section class="panel">
+          <h2>Manual Repair</h2>
+          <label>Action
+            <select id="repairAction">
+              <option value="set-architects">Set Architects</option>
+              <option value="set-corruption">Set Corruption</option>
+              <option value="invalidate-execution">Invalidate Execution</option>
+              <option value="set-installed-effects">Clear Installed Effects</option>
+              <option value="set-faction-score">Set Faction Score</option>
+            </select>
+          </label>
+          <label>Payload JSON
+            <textarea id="repairPayload" rows="8">{}</textarea>
+          </label>
+          <button id="repair">Apply Repair</button>
+          <p id="repairStatus" class="small"></p>
+        </section>
+      </div>
+      <div class="grid two">
+        <section class="panel"><h2>Players</h2><pre id="players"></pre></section>
+        <section class="panel"><h2>Program Cards</h2><pre id="cards"></pre></section>
+      </div>
+      <div class="grid two">
+        <section class="panel"><h2>Trace Log</h2><pre id="trace"></pre></section>
+        <section class="panel"><h2>Audit</h2><pre id="audit"></pre></section>
+      </div>
+    </main>
+    <script src="/app.js"></script>
+    <script>
+      const { api, sessionIdFromPath, text } = window.ColonyApp;
+      const sessionId = sessionIdFromPath();
+      document.getElementById("printables").href = `/api/sessions/${sessionId}/printables`;
+      async function load() {
+        const bundle = await api(`/api/admin/sessions/${sessionId}`);
+        text(document.getElementById("session"), JSON.stringify(bundle.session, null, 2));
+        text(document.getElementById("players"), JSON.stringify(bundle.players, null, 2));
+        text(document.getElementById("cards"), JSON.stringify(bundle.programCards, null, 2));
+        text(document.getElementById("trace"), JSON.stringify({
+          factionScore: bundle.factionScore,
+          unlockTier: bundle.unlockTier,
+          installedEffects: bundle.installedEffects,
+          traceLog: bundle.traceLog
+        }, null, 2));
+        text(document.getElementById("audit"), JSON.stringify(bundle.auditEvents, null, 2));
+      }
+      document.getElementById("repair").onclick = async () => {
+        try {
+          await api("/api/admin/repair", {
+            method: "POST",
+            body: JSON.stringify({
+              sessionId,
+              action: document.getElementById("repairAction").value,
+              payload: JSON.parse(document.getElementById("repairPayload").value || "{}")
+            })
+          });
+          text(document.getElementById("repairStatus"), "Repair applied.");
+          load();
+        } catch (error) {
+          text(document.getElementById("repairStatus"), error.message);
+        }
+      };
+      load();
+      setInterval(load, 4000);
+    </script>
+  </body>
+  </html>

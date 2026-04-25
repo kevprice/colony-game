@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Colony Player</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Player Registration</h1>
+      <section class="panel">
+        <p class="small">Enter your handle, then scan your personal player QR. No join token is needed.</p>
+        <p id="sessionLabel" class="small"></p>
+        <label>Display Name <input id="displayName" /></label>
+        <label>Player QR Token <input id="playerQr" class="code" /></label>
+        <button id="scan">Scan QR</button>
+        <button id="register">Register</button>
+        <p id="status" class="small"></p>
+      </section>
+      <section class="panel">
+        <h2>Your Assignment</h2>
+        <pre id="assignment">Not registered yet.</pre>
+      </section>
+      <section class="panel">
+        <h2>Visible Installed Effects</h2>
+        <pre id="visibleEffects">Register first.</pre>
+      </section>
+    </main>
+    <script src="/vendor/jsqr/jsQR.js"></script>
+    <script src="/app.js"></script>
+    <script>
+      const { api, startScanner, sessionIdFromPath, text } = window.ColonyApp;
+      const sessionId = sessionIdFromPath();
+      let registeredPlayer = null;
+      async function loadSession() {
+        try {
+          const viewerQuery = registeredPlayer ? `?viewerPlayerId=${encodeURIComponent(registeredPlayer.id)}` : "";
+          const bundle = await api(`/api/sessions/${sessionId}${viewerQuery}`);
+          text(document.getElementById("sessionLabel"), `Session: ${bundle.session.name}`);
+          text(document.getElementById("visibleEffects"), JSON.stringify(bundle.installedEffects, null, 2));
+        } catch (error) {
+          text(document.getElementById("status"), error.message);
+        }
+      }
+      document.getElementById("scan").onclick = () => startScanner(document.getElementById("scan"), document.getElementById("playerQr"));
+      document.getElementById("register").onclick = async () => {
+        try {
+          const player = await api("/api/register", {
+            method: "POST",
+            body: JSON.stringify({
+              sessionId,
+              displayName: document.getElementById("displayName").value,
+              playerQrToken: document.getElementById("playerQr").value
+            })
+          });
+          registeredPlayer = player;
+          text(document.getElementById("status"), "Registered to the Grid.");
+          text(document.getElementById("assignment"), JSON.stringify({
+            faction: player.faction,
+            role: player.roleId,
+            seat: player.seatNumber
+          }, null, 2));
+          loadSession();
+        } catch (error) {
+          text(document.getElementById("status"), error.message);
+        }
+      };
+      loadSession();
+    </script>
+  </body>
+  </html>

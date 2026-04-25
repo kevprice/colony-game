@@ -17,14 +17,15 @@ Global targeting rule:
 
 Global program-handling rules:
 
+- Physical program cards are anonymous on their face and may be handed directly between players.
 - A player may hold at most 1 program belonging to another player at a time.
 - A program received for execution may not be transferred to a third player.
 - A player may not run the same program twice in a row.
-- After visiting the Operator and resolving a program, the executor must immediately return that program to its owner.
+- After visiting the Terminal and resolving a program, the executor must immediately return that program to its owner.
 
 Key terms:
 
-- **Executor**: the player currently running a program through the Operator.
+- **Executor**: the player currently running a program through the Terminal.
 - **Source**: the player who owns the program being run.
 - **Target**: the player chosen by the executor to be affected by that program.
 
@@ -52,7 +53,7 @@ Do not add roles that rely on:
 - partial information such as `2+`, `one of`, or `likely`
 - mirrored duplicates with no meaningful functional difference
 - public revelation mechanics
-- programs that mostly reproduce what players can already infer by watching who goes to the Operator
+- programs that mostly reproduce what players can already infer by watching who goes to the Terminal
 
 ---
 
@@ -95,7 +96,7 @@ This is the current role pool worth keeping in the repository.
 **Boot Sequence:**
 
 - Registry players keep their eyes closed during setup.
-- When instructed by the Operator, Registry players in the Green faction raise their hands, then lower them.
+- When instructed by the host, Registry players in the Green faction raise their hands, then lower them.
 - When instructed again, Registry players in the Red faction raise their hands, then lower them.
 - Registry players gain **no information** from this process.
 
@@ -144,6 +145,30 @@ Keep only one direct faction-check family in active use at a time.
 
 ---
 
+#### Failover
+
+**Faction:** Variable, assigned during setup
+
+**Program:**
+
+- Select 2 players.
+- If exactly 1 of them is currently the Architect, the Architect state moves to the other selected player.
+- Learn only whether a transfer happened: `Yes / No`
+
+**Resolution Rules:**
+
+- This role does not reveal which selected player was the Architect before the transfer.
+- It only reveals whether the swap condition was met.
+- If neither selected player is the Architect, nothing happens.
+- If both selected players are Architects, nothing happens.
+
+**Design Notes:**
+
+- This role gives stronger direct control over Architect state without confirming which of the 2 players held that state.
+- It creates pressure around pairing suspects and testing hidden control lines.
+
+---
+
 #### Rerouter
 
 **Faction:** Variable, assigned during setup
@@ -158,12 +183,12 @@ Keep only one direct faction-check family in active use at a time.
 - The effect is delayed and persists until that player runs a program.
 - The effect applies once, then expires.
 - Because players may not target themselves, the affected executor cannot make themselves Architect through this effect.
-- If the executed program has multiple targets, the Operator selects which target becomes the Architect.
+- If the executed program has multiple targets, the Terminal selects which target becomes the Architect.
 
 **Design Notes:**
 
-- This role changes progression indirectly through player behavior rather than by naming the new Architect outright.
-- It creates uncertainty, pressure, and counterplay around who receives programs and who they choose to target.
+- This role changes Architect control indirectly through a chain of social actions rather than naming the new Architect outright.
+- It is more chaotic than Failover and works best when the table is already juggling several uncertain trust links.
 
 ---
 
@@ -178,9 +203,7 @@ These roles should reveal information that is not already obvious from watching 
 **Program:**
 
 - Select a player.
-- Learn:
-  - what program they last ran
-  - whose program it was
+- See that player's faction's last 5 trace logs.
 
 ---
 
@@ -191,7 +214,7 @@ These roles should reveal information that is not already obvious from watching 
 **Program:**
 
 - Select a player.
-- Learn who they last targeted.
+- See that player's last 3 trace logs.
 
 ---
 
@@ -202,17 +225,6 @@ These roles should reveal information that is not already obvious from watching 
 **Program:**
 
 - Learn the full details of the most recent trace-log entry.
-
----
-
-#### Exec Check
-
-**Faction:** Variable, assigned during setup
-
-**Program:**
-
-- Select a player.
-- Learn: `Did their last action succeed? (Yes / No)`
 
 ---
 
@@ -229,7 +241,7 @@ These roles should reveal information that is not already obvious from watching 
 
 **Design Notes:**
 
-- The Operator should return: `No effect` or `Action failed`.
+- The Terminal should return: `No effect` or `Action failed`.
 - The result should not reveal that the run was blocked.
 
 ---
@@ -241,19 +253,23 @@ These roles should reveal information that is not already obvious from watching 
 **Program:**
 
 - Select a player.
-- The next time they appear in the trace log, one field is incorrect:
-  - identity
-  - source
-  - or corruption status
+- Their next action is removed from the trace log.
 
 **Design Notes:**
 
-- Must not remove the trace entry entirely.
-- Should create doubt, not erase information.
+- This is stronger than simple distortion and creates real uncertainty around missing history.
+- Because it removes rather than alters, it should remain rare.
 
 ---
 
 ### Corruption Roles
+
+Corruption gives **false information**.
+
+- A corrupted executor receives false output from the Terminal.
+- `Yes` becomes `No`, and `No` becomes `Yes`, where possible.
+- Trace-log results become corrupted and cannot be trusted.
+- If a corrupted Architect installs a Grid effect, the point for that install goes to the opposing faction.
 
 #### Spoofer
 
@@ -261,23 +277,28 @@ These roles should reveal information that is not already obvious from watching 
 
 **Program:**
 
-- Learn the role of a target player.
-
-**Hidden Effect:**
-
-- The executor becomes **corrupted** if the Spoofer role is armed.
+- This role switches between 2 program states.
+- If the Spoofer role currently holds armed corruption:
+  - use the **Spoofer program**
+  - select a player
+  - learn that player's role
+  - the executor becomes **corrupted**
+- If the Spoofer role does **not** currently hold armed corruption:
+  - use the **Sink program**
+  - select a player
+  - if they are corrupted, remove corruption from them
+  - corruption returns to the Spoofer role and becomes armed
 
 **Constraints:**
 
-- Only one active corruption from this role may exist at a time.
 - The Spoofer role begins the game armed.
-- After corruption is applied through the Spoofer program, the Spoofer role must receive another program and access the Operator to re-arm corruption.
+- If the Spoofer role has armed corruption, its card behaves like Registry to a liar at the table: strong role output with hidden danger.
+- If the Spoofer role does not have armed corruption, its card behaves like a cleanse and can be bluffed as Purge.
 
 **Design Notes:**
 
-- Corruption applies to the executor, not the target.
-- This program should appear useful and desirable.
-- Delegation and trust remain central to re-use.
+- Corruption always applies to the executor, not the target.
+- The important game question is not just who is corrupted, but which role currently has corruption armed.
 
 ---
 
@@ -287,14 +308,22 @@ These roles should reveal information that is not already obvious from watching 
 
 **Program:**
 
-- Select a player.
-- If they are corrupted, remove corruption from them and take that corruption onto yourself.
+- This role switches between 2 program states.
+- If the Sink role does **not** currently hold armed corruption:
+  - use the **Sink program**
+  - select a player
+  - if they are corrupted, remove corruption from them
+  - corruption returns to the Sink role and becomes armed
+- If the Sink role currently holds armed corruption:
+  - use the **Spoofer program**
+  - select a player
+  - learn that player's role
+  - the executor becomes **corrupted**
 
 **Design Notes:**
 
-- This role pulls corruption off another player by acting as a dirty drain for the Grid.
-- It keeps corruption in circulation rather than destroying it.
-- It creates strategic risk for the user and for anyone trusting them afterward.
+- Sink and Spoofer are mirror roles around the same corruption line.
+- A Sink card can truthfully act like a cleanse when unarmed and like a Spoofer when armed.
 
 ---
 
@@ -306,12 +335,13 @@ These roles should reveal information that is not already obvious from watching 
 
 - Select a player.
 - If they are currently corrupted, remove that corruption from the game entirely.
+- If corruption has already been purged from the game, select a player and make that player the Architect.
 
 **Design Notes:**
 
 - This is a true purge rather than a transfer.
 - If used on a non-corrupted player, it fails.
-- Keep this role distinct from Sink in both rules and table language.
+- After corruption is gone from the game, this role changes function and becomes an Architect-assignment tool.
 
 ---
 
@@ -334,21 +364,23 @@ These roles should reveal information that is not already obvious from watching 
 
 **Program:**
 
-- Initiate endgame.
+- Initiate the final unlock phase.
 
 **Conditions:**
 
-- Can only be used after a minimum number of nodes are built. Recommended: 3.
+- Can only be used after a minimum number of installed effects exist. Recommended: 3.
 
 **Effect:**
 
 - Triggers the final phase of the game.
-- Remaining nodes determine the outcome.
+- From that point, the next faction point scored wins.
 
 **Design Notes:**
 
 - Must remain hidden.
 - Becomes a high-value target if revealed.
+- Use only in larger games.
+- In the biggest tests, 2 Bootstrap roles may be needed, ideally on different factions if you are manually curating setup.
 
 ---
 
@@ -384,4 +416,4 @@ Avoid roles that:
 - produce weak, partial, or statistical output
 - only matter in rare edge cases
 
-Rare systemic roles such as **Spoofer**, **Sink**, **Purge**, and **Rerouter** should usually appear at most once each in a test setup.
+Rare systemic roles such as **Spoofer**, **Sink**, **Purge**, **Failover**, and **Rerouter** should usually appear at most once each in a test setup.

@@ -1,0 +1,29 @@
+{
+  "name": "colony-game",
+  "version": "1.0.0",
+  "description": "Colony is a real-time social deduction game set in a post-apocalyptic cyberpunk ruin, built around **delegated programs **(a user's powers)**, hidden roles, and The Grid** (A game facilitator).",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "powershell -Command \"if (Test-Path dist) { Remove-Item -Recurse -Force dist }; tsc\"",
+    "start": "node dist/src/index.js",
+    "stop": "powershell -Command \"$serverPid = (Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty OwningProcess); if ($serverPid) { Stop-Process -Id $serverPid -Force; Write-Host 'Stopped server on port 3000.' } else { Write-Host 'No server listening on port 3000.' }\"",
+    "reset-db": "powershell -Command \"@('colony.sqlite','colony.sqlite-shm','colony.sqlite-wal') | ForEach-Object { if (Test-Path $_) { Remove-Item -Force $_ } }; Write-Host 'Reset Colony SQLite files.'\"",
+    "test": "tsx --test tests/engine.test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "express": "^5.2.1",
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}

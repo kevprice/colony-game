@@ -2,34 +2,36 @@
 
 ## Overview
 
-Colony is a real-time social deduction game set in a post-apocalyptic cyberpunk ruin, built around **delegated programs **(a user's powers)**, hidden roles, and The Grid** (A game facilitator).
+Colony is a real-time social deduction game set in a post-apocalyptic cyberpunk ruin, built around **delegated programs**, hidden roles, and a hidden **Architect state** that can reshape the Grid over time.
 
-Players do not act directly. Instead, their programmes must be delegated to other players to be executed in the grid, creating a network of dependency, deception, and inference.
+Players do not act directly. Instead, they jack their programs into other players to be run through the **Terminal**, creating a network of dependency, deception, and inference.
 
 The game is resolved through:
 
-- enacting other players powers in private interactions with the **Operator** and the **Grid**
-- a shared but gated **trace log**
-- a changing **network state** (win conditions) shaped by player decisions
+- enacting other players' programs at the **Terminal**
+- a hidden but queryable **trace log**
+- a growing catalog of **installed effects** that permanently change how the Grid behaves
+- a faction race to install enough effects to win
 
 ---
 
 ## Core Principles
 
 1. **Grid truth is absolute**
-   - The Operator always provides correct information, unless corruption is applied.
-   - All program results are truthful.
+   - The Terminal always gives the correct result unless corruption changes the output.
+   - All resolved program results are truthful to the actual program that was run.
 2. **Player communication is unverified**
    - Players may lie freely.
-   - There is no mechanic to verify whether a player is telling the truth.
    - Players may lie about what program they are loading into another player.
-   - The Operator does not correct false claims about a program's identity.
+   - The Terminal does not correct false claims about a program's identity.
 3. **All meaningful actions require trust**
    - Players cannot run their own programs.
    - All programs must be loaded into another player to be run.
+   - The Architect cannot assign a targeted installed effect to themselves.
 4. **Progression is controlled but contestable**
-   - A single player, the **Architect** (the player who can advance the network), can advance the network.
-   - This state is hidden, persistent, and transferable.
+   - A hidden **Architect** can install new persistent effects into the Grid.
+   - Architect control is hidden, persistent, and transferable.
+   - Factions race through Architect-driven installs rather than through pre-aligned map control.
 
 ---
 
@@ -39,11 +41,11 @@ The game runs continuously with no fixed rounds.
 
 1. Players discuss, negotiate, and exchange programs.
 2. When Player A jacks a program into Player B:
-   - Player B must immediately go to the Operator.
-   - Player B must run the program.
-3. The Operator resolves the program privately through the Grid.
-4. If Player B is the **Architect**, they may choose to advance the network by building a node.
-5. After a short delay, such as 2 to 3 minutes, the Operator announces any changes to the network state.
+   - Player B must immediately go to the Terminal, or wait and resolve it as soon as the Terminal is free.
+   - Player B must run the program. Players may not accept another player's program with the intention of not using it.
+3. The Terminal resolves the program through the Grid.
+4. If Player B is the **Architect**, they may choose to **install one persistent effect** into the Grid.
+5. After a short delay, such as 2 to 3 minutes, any public Grid changes are announced.
 
 ### Global Targeting Rule
 
@@ -52,16 +54,26 @@ The game runs continuously with no fixed rounds.
 
 ### Global Program-Handling Rules
 
+- Physical program cards are anonymous on their face and may be handed directly between players.
 - A player may hold at most 1 program belonging to another player at a time.
 - A program received for execution may not be forwarded to a third player.
 - A player may not run the same program twice in a row.
-- After visiting the Operator and resolving a program, the executor must immediately return that program to its owner.
+- After visiting the Terminal and resolving a program, the executor must immediately return that program to its owner.
 
 ### Key Terms
 
-- **Executor**: the player currently running a program through the Operator.
+- **Executor**: the player currently running a program through the Terminal.
 - **Source**: the player who owns the program being run.
 - **Target**: the player chosen by the executor to be affected by that program.
+- **Architect**: a hidden role state. A player learns they are currently an Architect either because the Terminal tells them after they run a received program, or because a role program reveals that information.
+- **Grid effect**: an additional persistent rule created by an Architect. Grid effects are not role programs.
+
+### What to Find Out
+
+- other players' roles, so you can understand their programs
+- other players' factions, so you know who is on your team
+- who is currently an Architect, so you can stop them from scoring or move that state
+- where the corruption currently is
 
 ---
 
@@ -77,30 +89,66 @@ Each role has an associated same-named program. When ambiguity matters, these ru
 
 ### Factions
 
-- **Red**: Seeks to rebuild the network through control, surveillance, lockouts, and enforcement.
-- **Green**: Seeks to rebuild the network through distributed trust, shared routing, privacy, and cooperative access.
+- **Red**: seeks to seize momentum through aggressive control of Architect access and effect timing.
+- **Green**: seeks to seize momentum through coordinated trust, information, and safer long-term installs.
 
-Players win if the final network state favors their faction.
+Factions do not win through pre-tagged effects. Instead, a faction scores when one of its Architects installs an effect.
 
 ---
 
-## Progression System
+## Architect Progression System
 
 ### The Architect
 
-- One player is the **current Architect**.
-- The Architect:
-  - remains in that role until changed
-  - may advance the network when running a program
+- One player is in the **Architect state** at game start unless a setup or later effect creates a second Architect.
+- The Architect state remains hidden until inferred or revealed.
+- The Architect may install one persistent effect when they run a received program.
 
-### Progress Rules
+### Install Rules
 
-- The Architect must:
+- To install an effect, the Architect must:
   - receive a program from another player
   - run that program
-  - choose a node to build
-- The Architect **cannot use the same program twice** to progress.
-- The Architect may change through certain role effects, including delayed or indirect redirection effects.
+  - choose one available effect from the current unlock tier
+- The Architect **cannot use the same program twice to install a Grid effect**.
+- An Architect may still run that same program later under the normal rules of the game, but it cannot be the program used for their next install.
+- Installed effects are persistent until the game ends unless an effect explicitly says otherwise.
+- Targeted installed effects may not target the Architect themselves.
+- If multiple Architects exist, each Architect installs and scores for their own faction.
+
+### Visibility Rules
+
+- Installs are announced after a short delay so the table is not given an immediate Architect confirmation.
+- Installed effects are publicly highlighted for the faction that installed them.
+- If an effect is **targeted**, the table does not learn who received it by default.
+- Only the Architect and the recipient know who received a targeted effect unless a later ownership-reveal effect changes that.
+- If an effect is **global**, the whole table learns that it has been installed once the delay ends.
+
+---
+
+## Unlock Race and Winning
+
+### Faction Score
+
+Each time an Architect installs an effect, that Architect's faction gains **1 point**.
+
+Recommended victory thresholds:
+
+- **6 to 7 players:** first faction to **4** points wins
+- **8 to 10 players:** first faction to **5** points wins
+- **11 to 12 players:** first faction to **6** points wins
+
+The game ends immediately when a faction reaches its threshold.
+
+### Unlock Tiers
+
+The Architect does not have access to the full effect catalog at all times.
+
+- **Tier 1**: available from game start
+- **Tier 2**: unlocks after **2 total installed effects**
+- **Tier 3**: unlocks after **4 total installed effects**
+
+This keeps the early game readable and allows the Grid to become stranger over time.
 
 ---
 
@@ -122,28 +170,33 @@ Players win if the final network state favors their faction.
   - at least 2 to 3 **information roles**
   - at least 2 **disruption roles**
   - 1 **Spoofer**
-  - 1 **Rerouter**
+  - 1 **Failover**
+  - optionally 1 **Rerouter** if you want more chaotic Architect movement
   - 1 **Sink**
   - 1 **Purge**
-  - 1 **Bootstrap** role, if testing endgame
   - at least 1 role with **boot-sequence information**
+- **Bootstrap** should only appear in larger games. In the biggest tests, consider 2 Bootstrap roles if you are manually curating factions.
 - Roles that move progression or corruption should be rare. In most tests, include at most one of each.
 
-### Operator
+### Terminal and Host
 
-- One player acts as the **Operator** for the Grid.
+- The **Terminal** resolves all programs and tracks hidden game state.
+- The host uses the admin console to oversee the Grid.
 - Responsibilities:
   - resolve all programs privately
   - maintain the trace log
   - track:
-    - Architect
+    - Architect control
     - corruption
-    - network state
+    - installed effects
+    - faction scores
+    - unlock tiers
 
 ### Initial State
 
-- No nodes are built at the start.
-- The trace log is **disabled** unless explicitly enabled by a node.
+- No persistent effects are installed at the start.
+- Faction scores start at **0 - 0**.
+- The trace log is hidden unless accessed by a role program or later effect.
 
 ### Architect
 
@@ -154,8 +207,8 @@ Players win if the final network state favors their faction.
 ## Boot Sequence
 
 1. All players receive their role and faction privately.
-2. The Operator resolves any boot-sequence information for roles in play.
-3. The Operator announces:
+2. The host resolves any boot-sequence information for roles in play.
+3. The host announces:
    - the Grid is live
    - players may begin discussion and program exchange
 4. Players begin interacting immediately.
@@ -167,67 +220,45 @@ Some roles begin the game with information revealed during setup.
 
 Example boot sequence:
 
-- The **Ghost Pair** open their eyes and learn who the other Ghost Pair operator is, without learning that operator's faction.
+- The **Ghost Pair** open their eyes and learn who the other Ghost Pair player is, without learning that player's faction.
 - All players close their eyes.
-- The Operator asks **Registry** players in the Green faction to raise their hands, then lower them.
-- The Operator then asks **Registry** players in the Red faction to raise their hands, then lower them.
-- Ghost Pair operators learn which players are Registry, and whether each observed Registry player is Red or Green.
+- The host asks **Registry** players in the Green faction to raise their hands, then lower them.
+- The host then asks **Registry** players in the Red faction to raise their hands, then lower them.
+- Ghost Pair players learn which players are Registry, and whether each observed Registry player is Red or Green.
 - Registry players gain no boot-sequence information from this process.
 
-### Operator Notes
+### Terminal Notes
 
 - Resolve all boot-sequence steps before open discussion begins.
 - If a role receives setup information, make sure that only the intended role gains it.
 - When a player receives a program:
-  - they must immediately approach the Operator
+  - they must immediately approach the Terminal, or wait and resolve it as soon as the Terminal is free
+  - they may not keep that program with the intention of not using it
+  - the program card itself remains anonymous; only the Grid reveals what it really is
   - ask them what they intend to do with the program: what they have been told the program does may not be what the program actually does
   - resolve the program according to the card they were actually given, not according to what another player claimed it was
   - a target chosen by the player is the target of what is written on the program card, not the target of what the player thinks is on the card
   - do not reveal whether a player was misled about the program they received
+- When an Architect installs an effect:
+  - apply the effect immediately
+  - record the point for that Architect's faction immediately
+  - delay the public announcement slightly so the Architect is not automatically identified
 - Keep interactions quick to maintain flow.
-- Announce network changes after a short delay, typically 2 to 3 minutes.
 
 ---
 
-## Network Nodes
+## Installed Effects
 
-- Each node:
-  - is known to all players
-  - has a **Red or Green alignment**
-  - modifies how the game behaves
-- The game ends after a fixed number of nodes are built.
-- The faction with majority alignment wins.
+Installed effects are persistent Grid changes created by the Architect.
 
-### Initial Node List (v0.1)
+- Effects are **not faction-aligned**
+- Effects come in 2 families:
+  - **Capability effects**: granted to a specific player and triggered during play
+  - **System effects**: change how the whole Grid behaves
+- If 2 global effects would create incompatible rules, the **newest installed effect overrides the older one**
+- A player should hold at most **2 installed capability effects** at a time
 
-#### Red-Aligned Nodes
-
-**Trace Archive**
-
-- Enables access to the trace log via programs.
-
-**Alarm Mesh**
-
-- The Operator may announce when actions occur.
-
-**Lockout**
-
-- The Architect may restrict a player from receiving programs temporarily.
-
-#### Green-Aligned Nodes
-
-**Consensus Patch**
-
-- Progression requires an additional player's approval.
-
-**Cipher Veil**
-
-- Trace-log queries return incomplete information.
-
-### Notes
-
-- All nodes are known to players at the start.
-- Each build shifts the network toward Red or Green alignment.
+The current effect catalog lives in [effects.md](C:\Users\kevpr\workspace\colony-game\effects.md).
 
 ---
 
@@ -241,9 +272,9 @@ Each trace entry contains:
 - source, or whose program was run
 - program name
 - whether the executor was **corrupted**
-- whether the executor was the **Architect**
+- whether the executor was an **Architect**
 
-Players may gain access to the trace log via programs.
+Players may gain access to the trace log via programs or later installed effects.
 
 Trace-log access is:
 
@@ -259,12 +290,22 @@ Corruption is a **rare, persistent effect** applied by specific roles.
 
 ### Rules
 
-- At the start of the game, the **Spoofer role** is armed to apply corruption.
-- When the **Spoofer program** is run while the Spoofer role is armed, the executor becomes **corrupted**.
-- Only one active corruption from the Spoofer role may exist at a time.
-- After applying corruption, the Spoofer role must regain access to the Operator through another received program to re-arm corruption.
-- The **Sink program** removes corruption from a player by taking it onto its own user.
+- At the start of the game, the **Spoofer role** holds armed corruption.
+- **Spoofer** and **Sink** are mirror roles around the same corruption line.
+- If either role currently holds armed corruption, that role's card behaves as the **Spoofer program**:
+  - select a player
+  - learn that player's role
+  - the executor becomes **corrupted**
+- If either role does **not** currently hold armed corruption, that role's card behaves as the **Sink program**:
+  - select a player
+  - if they are corrupted, remove corruption from them
+  - corruption returns to the source role of that card and becomes armed
 - The **Purge program** removes corruption from the game entirely if it correctly identifies a corrupted player.
+- Once corruption is no longer in the game, the **Purge program** changes state and may instead select a player to become the Architect.
+- A corrupted player receives **false information** from the Terminal.
+- Binary outputs are inverted where possible, such as `Yes` becoming `No` and `No` becoming `Yes`.
+- Trace-log outputs become corrupted and cannot be trusted while the executor is corrupted.
+- If a corrupted Architect installs a new Grid effect, the point for that install is scored by the **other faction**.
 
 ### Effects
 
@@ -280,68 +321,6 @@ Corruption should:
 - create doubt
 - be traceable through reasoning
 - not overwhelm the game
-
----
-
-## The Spoofer
-
-The Spoofer is a role that may belong to either faction.
-
-### Program
-
-- Provides a useful effect, such as an identity check.
-- If the Spoofer role is armed, the **executor of the Spoofer program becomes corrupted**.
-
-### Constraints
-
-- The Spoofer role begins the game armed.
-- Only one active corruption from this role may exist at a time.
-- After applying corruption through the Spoofer program, the Spoofer role must receive another program and access the Operator to re-arm.
-
-### Design Intent
-
-- The Spoofer must participate in the trust network.
-- Corruption is intentional, targeted, and contestable.
-
----
-
-## The Sink
-
-The Sink is a role that may belong to either faction.
-
-### Program
-
-- The Sink program removes corruption from a target player by taking it onto the user.
-
-### Constraints
-
-- Sink does not destroy corruption.
-- If the target is not corrupted, the effect fails.
-
-### Design Intent
-
-- The Sink keeps corruption in circulation instead of solving it outright.
-- It creates strategic risk for anyone who chooses to use it.
-
----
-
-## The Purge
-
-The Purge is a role that may belong to either faction.
-
-### Program
-
-- The Purge program permanently removes corruption from a target player if that target is currently corrupted.
-
-### Constraints
-
-- If the target is not corrupted, the effect fails.
-- This role purges corruption instead of transferring it.
-
-### Design Intent
-
-- The Purge provides a true answer to corruption.
-- It rewards correct identification rather than merely shifting risk.
 
 ---
 
@@ -363,41 +342,21 @@ These roles provide **strong, binary truth**.
 
 ### Signal Trace
 
-- Learns whether a player is the Architect.
+- Learns whether a player is an Architect.
 
 ### Scanner
 
 - Learns whether a player is corrupted.
 
+### Failover
+
+- Selects 2 players and moves the Architect state between them if exactly 1 of them currently holds it.
+- Only reveals whether a transfer happened.
+
 ### Rerouter
 
 - Marks a player so that the next time they run a program, that program's target becomes the Architect.
-
----
-
-## Bootstrap Role
-
-At least one role should exist that can:
-
-- trigger the endgame
-- unlock final-tier progression
-
-This role must:
-
-- remain hidden
-- be vulnerable to disruption
-
----
-
-## Endgame (Draft)
-
-- The game ends after a fixed number of nodes are built. Recommended: 5 to 7.
-- The faction with the majority of aligned nodes wins.
-
-### Optional Rule
-
-- A specific role may trigger the endgame early.
-- This role should remain hidden and vulnerable to disruption.
+- Pushes Architect control through a delayed social chain rather than an immediate swap.
 
 ---
 
@@ -409,27 +368,30 @@ The game is designed so that:
 - trust is necessary, but **dangerous**
 - control is centralized, but **contestable**
 - information is strong, but **fragile**
+- system power accumulates over time instead of resolving in isolated bursts
 
 Players should feel:
 
 - uncertain, but not lost
 - capable of deduction, but never certain
 - dependent on others, but never safe
+- aware that the Grid is being reshaped around them as the game continues
 
 ---
 
 ## Future Iteration Areas
 
-- node effects and balance
+- effect balance and tier placement
 - role distribution and count
 - Architect reassignment mechanics
 - trace-log query design
-- endgame conditions
+- duplicate-Architect pacing
+- victory threshold tuning
 
 ---
 
 ## Status
 
-This is a **minimal playable ruleset (v0.1)** intended for testing core dynamics.
+This is a **minimal playable ruleset (v0.2)** intended for testing the unlock-race model.
 
 Expect iteration.

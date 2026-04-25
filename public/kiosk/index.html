@@ -1,0 +1,617 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Colony Kiosk</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="kiosk-main">
+      <header class="kiosk-hero panel">
+        <div class="kiosk-hero-copy">
+          <p class="eyebrow">Colony Grid</p>
+          <h1>Colony Terminal</h1>
+          <p class="small">
+            Public terminal view. Hidden state stays inside the Grid. Visible powers and installed effects are shown below so the
+            room can plan ahead.
+          </p>
+        </div>
+        <div class="kiosk-stats">
+          <div class="stat-chip red">
+            <span>Red Score</span>
+            <strong id="redScore">0</strong>
+          </div>
+          <div class="stat-chip green">
+            <span>Green Score</span>
+            <strong id="greenScore">0</strong>
+          </div>
+          <div class="stat-chip">
+            <span>Unlock Tier</span>
+            <strong id="unlockTier">T1</strong>
+          </div>
+          <div class="stat-chip">
+            <span>Installed</span>
+            <strong id="installCount">0</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="grid two kiosk-scan-row">
+        <section class="panel kiosk-camera-panel">
+          <h2>Mainframe Camera</h2>
+          <div class="camera-shell">
+            <video id="camera" autoplay playsinline muted class="kiosk-video"></video>
+            <div class="camera-overlay" aria-hidden="true">
+              <div class="camera-vertical-lines"></div>
+              <div class="camera-sweep"></div>
+            </div>
+          </div>
+          <p id="cameraStatus" class="small">Booting camera...</p>
+        </section>
+
+        <section class="panel kiosk-terminal">
+          <h2 id="stageTitle">Awaiting Presence</h2>
+          <div id="stagePrompt" class="terminal-copy">
+            Walk up to the terminal. When the system sees a face, it will ask for identity.
+          </div>
+          <div id="identityPanel" class="identity-badge"></div>
+          <div id="selectionArea"></div>
+          <div class="row">
+            <button id="submitSelection" style="display:none;">Run Program</button>
+            <button id="shutdown" style="display:none;">Shut Down System</button>
+          </div>
+          <div id="result" class="terminal-result"></div>
+        </section>
+      </section>
+
+      <section class="grid two kiosk-bottom">
+        <section class="panel kiosk-state-panel">
+          <h2>Grid State</h2>
+          <div class="tier-track" id="tierTrack">
+            <div class="tier-node active">Tier 1</div>
+            <div class="tier-node">Tier 2</div>
+            <div class="tier-node">Tier 3</div>
+          </div>
+          <div class="score-track">
+            <div>
+              <div class="score-label">Red</div>
+              <div class="progress-shell"><div id="redProgress" class="progress-fill red"></div></div>
+            </div>
+            <div>
+              <div class="score-label">Green</div>
+              <div class="progress-shell"><div id="greenProgress" class="progress-fill green"></div></div>
+            </div>
+          </div>
+          <div>
+            <h3>Installed Effects</h3>
+            <div id="installedEffects" class="installed-list"></div>
+          </div>
+        </section>
+
+        <section class="panel power-panel">
+          <h2>Power Library</h2>
+          <p class="small">Click a power to inspect how it changes the Grid.</p>
+          <div id="powerLibrary" class="power-grid"></div>
+          <div class="power-detail-shell">
+            <h3>Power Detail</h3>
+            <div id="powerDetail" class="power-detail empty">
+              Select a power to inspect its effect, scope, and unlock tier.
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="/vendor/jsqr/jsQR.js"></script>
+    <script src="/app.js"></script>
+    <script>
+      const { api, sessionIdFromPath, text, html } = window.ColonyApp;
+      const sessionId = sessionIdFromPath();
+      const video = document.getElementById("camera");
+      const cameraStatus = document.getElementById("cameraStatus");
+      const stageTitle = document.getElementById("stageTitle");
+      const stagePrompt = document.getElementById("stagePrompt");
+      const identityPanel = document.getElementById("identityPanel");
+      const selectionArea = document.getElementById("selectionArea");
+      const resultPanel = document.getElementById("result");
+      const submitSelection = document.getElementById("submitSelection");
+      const shutdownButton = document.getElementById("shutdown");
+      const redScore = document.getElementById("redScore");
+      const greenScore = document.getElementById("greenScore");
+      const unlockTierLabel = document.getElementById("unlockTier");
+      const installCount = document.getElementById("installCount");
+      const installedEffectsPanel = document.getElementById("installedEffects");
+      const tierTrack = document.getElementById("tierTrack");
+      const redProgress = document.getElementById("redProgress");
+      const greenProgress = document.getElementById("greenProgress");
+      const powerLibrary = document.getElementById("powerLibrary");
+      const powerDetail = document.getElementById("powerDetail");
+
+      let sessionBundle = null;
+      let powerCatalog = [];
+      let stream = null;
+      let frameHandle = 0;
+      let faceDetector = "FaceDetector" in window ? new window.FaceDetector() : null;
+      let faceSeenCount = 0;
+      let lastFaceCheck = 0;
+      let currentPhase = "waiting-face";
+      let currentExecutor = null;
+      let currentExecutorToken = null;
+      let currentBegin = null;
+      let currentResolution = null;
+      let selectedPowerId = null;
+      let pendingApproval = null;
+
+      function setPhase(phase, title, prompt) {
+        currentPhase = phase;
+        text(stageTitle, title);
+        text(stagePrompt, prompt);
+      }
+
+      function resetTerminal() {
+        currentExecutor = null;
+        currentExecutorToken = null;
+        currentBegin = null;
+        currentResolution = null;
+        pendingApproval = null;
+        identityPanel.textContent = "";
+        identityPanel.className = "identity-badge";
+        selectionArea.innerHTML = "";
+        resultPanel.textContent = "";
+        resultPanel.className = "terminal-result";
+        submitSelection.style.display = "none";
+        shutdownButton.style.display = "none";
+        submitSelection.textContent = "Run Program";
+        setPhase(
+          faceDetector ? "waiting-face" : "awaiting-executor",
+          faceDetector ? "Awaiting Presence" : "Identify Yourself",
+          faceDetector
+            ? "Walk up to the terminal. When the system sees a face, it will ask for identity."
+            : "Face detection is unavailable in this browser. Present your player QR to identify yourself."
+        );
+      }
+
+      function genericTargetLabel(scope) {
+        return scope === "global" ? "Global Grid Effect" : "Target Hidden";
+      }
+
+      function renderInstalledEffects() {
+        const effects = sessionBundle?.installedEffects || [];
+        if (!effects.length) {
+          html(installedEffectsPanel, `<div class="installed-empty">No effects installed yet.</div>`);
+          return;
+        }
+        html(
+          installedEffectsPanel,
+          effects
+            .map((effect) => {
+              const targetLabel = effect.targetHidden ? genericTargetLabel(effect.scope) : effect.targetLabel || genericTargetLabel(effect.scope);
+              return `
+                <article class="installed-card ${effect.ownerFaction.toLowerCase()}">
+                  <div class="installed-topline">
+                    <span class="installed-name">${effect.effectId}</span>
+                    <span class="installed-tier">T${effect.tier}</span>
+                  </div>
+                  <div class="installed-meta">
+                    <span>${effect.ownerFaction}</span>
+                    <span>${effect.scope === "global" ? "Global" : targetLabel}</span>
+                  </div>
+                </article>
+              `;
+            })
+            .join("")
+        );
+      }
+
+      function renderDashboard() {
+        const score = sessionBundle.factionScore;
+        const threshold = Math.max(score.victoryThreshold, 1);
+        text(redScore, `${score.redPoints}/${threshold}`);
+        text(greenScore, `${score.greenPoints}/${threshold}`);
+        text(unlockTierLabel, `T${sessionBundle.unlockTier.currentTier}`);
+        text(installCount, String(sessionBundle.installedEffects.length));
+        redProgress.style.width = `${Math.min(100, (score.redPoints / threshold) * 100)}%`;
+        greenProgress.style.width = `${Math.min(100, (score.greenPoints / threshold) * 100)}%`;
+        [...tierTrack.children].forEach((node, index) => {
+          node.classList.toggle("active", index < sessionBundle.unlockTier.currentTier);
+        });
+        renderInstalledEffects();
+        renderPowerLibrary();
+      }
+
+      function renderIdentity(player) {
+        const label = player.displayName || `Player ${player.seatNumber}`;
+        text(identityPanel, `${label}\nIdentity confirmed.`);
+        identityPanel.className = "identity-badge active";
+      }
+
+      function playerOptions(players) {
+        return players
+          .map((player) => `<option value="${player.id}">${player.displayName}</option>`)
+          .join("");
+      }
+
+      function renderSelection(begin) {
+        const players = begin.availablePlayers.filter((player) => player.id !== begin.executor.id);
+        let controls = "";
+        if (begin.programDefinition.inputType === "single-player") {
+          controls += `<label>Select player<select id="targetA">${playerOptions(players)}</select></label>`;
+        } else if (begin.programDefinition.inputType === "double-player") {
+          controls += `<label>Select player 1<select id="targetA">${playerOptions(players)}</select></label>`;
+          controls += `<label>Select player 2<select id="targetB">${playerOptions(players)}</select></label>`;
+        }
+        selectionArea.innerHTML = controls;
+        submitSelection.style.display = "block";
+      }
+
+      function renderArchitectInstall() {
+        const players = currentBegin.availablePlayers.filter((player) => player.id !== currentBegin.executor.id);
+        const effects = currentResolution.availableInstalledEffects || [];
+        const targetedEffects = new Set([
+          "Deep Log Access",
+          "Faction Insight",
+          "Corruption Detection",
+          "Private Ownership Map",
+          "Untrusted Actor",
+          "Corruption Immunity",
+          "Redirect Amplification"
+        ]);
+        selectionArea.innerHTML = `
+          <label>Install effect
+            <select id="installedEffect">
+              ${effects.map((effect) => `<option value="${effect.id}">${effect.id} (Tier ${effect.tier})</option>`).join("")}
+            </select>
+          </label>
+          <label>Target player (for targeted effects)
+            <select id="targetPlayer">
+              <option value="">None</option>
+              ${playerOptions(players)}
+            </select>
+          </label>
+          <label>Approving player (for diplomacy effects)
+            <select id="approvalPlayer">
+              <option value="">None</option>
+              ${playerOptions(players)}
+            </select>
+          </label>
+        `;
+        submitSelection.textContent = "Install Effect";
+        submitSelection.style.display = "block";
+        const effectSelect = document.getElementById("installedEffect");
+        const targetPlayer = document.getElementById("targetPlayer");
+        function syncTargetVisibility() {
+          const requiresTarget = targetedEffects.has(effectSelect.value);
+          targetPlayer.closest("label").style.display = requiresTarget ? "block" : "none";
+        }
+        effectSelect.onchange = syncTargetVisibility;
+        syncTargetVisibility();
+      }
+
+      function renderApprovalPrompt() {
+        const architect = sessionBundle.players.find((player) => player.id === pendingApproval.architectPlayerId);
+        const target = pendingApproval.targetPlayerId
+          ? sessionBundle.players.find((player) => player.id === pendingApproval.targetPlayerId)
+          : null;
+        selectionArea.innerHTML = `
+          <div class="terminal-copy">
+            Pending install from ${architect?.displayName || "Unknown"}.<br />
+            Effect: ${pendingApproval.installedEffectId}<br />
+            ${target ? `Target: ${target.displayName}<br />` : ""}
+            Approve or disallow before running your own program.
+          </div>
+        `;
+        submitSelection.textContent = "Approve Install";
+        submitSelection.style.display = "block";
+        shutdownButton.textContent = "Disallow Install";
+        shutdownButton.style.display = "block";
+      }
+
+      function showPowerDetail(effectId) {
+        selectedPowerId = effectId;
+        const effect = powerCatalog.find((entry) => entry.id === effectId);
+        if (!effect) {
+          powerDetail.className = "power-detail empty";
+          text(powerDetail, "Select a power to inspect its effect, scope, and unlock tier.");
+          return;
+        }
+        const installed = (sessionBundle?.installedEffects || []).filter((entry) => entry.effectId === effect.id);
+        const unlockTier = sessionBundle?.unlockTier?.currentTier ?? 1;
+        const state = installed.length ? "Installed" : effect.tier <= unlockTier ? "Available" : "Locked";
+        powerDetail.className = "power-detail";
+        html(
+          powerDetail,
+          `
+            <div class="power-detail-header">
+              <div>
+                <p class="eyebrow">Tier ${effect.tier}</p>
+                <h3>${effect.id}</h3>
+              </div>
+              <span class="power-state ${state.toLowerCase()}">${state}</span>
+            </div>
+            <p>${effect.summary}</p>
+            <div class="detail-meta">
+              <span>${effect.scope === "global" ? "Global Effect" : "Targeted Effect"}</span>
+              <span>${effect.effectType === "system" ? "System Rule" : "Capability Grant"}</span>
+            </div>
+            <div class="announcement-block">
+              <strong>Public announcement</strong>
+              <p>${effect.publicAnnouncementText}</p>
+            </div>
+          `
+        );
+        [...powerLibrary.querySelectorAll(".power-card")].forEach((card) => {
+          card.classList.toggle("selected", card.dataset.powerId === effectId);
+        });
+      }
+
+      function renderPowerLibrary() {
+        if (!powerCatalog.length) return;
+        const unlockTier = sessionBundle?.unlockTier?.currentTier ?? 1;
+        const installedIds = new Set((sessionBundle?.installedEffects || []).map((effect) => effect.effectId));
+        html(
+          powerLibrary,
+          powerCatalog
+            .map((effect) => {
+              const isInstalled = installedIds.has(effect.id);
+              const isUnlocked = effect.tier <= unlockTier;
+              const classes = [
+                "power-card",
+                isInstalled ? "installed" : isUnlocked ? "available" : "locked",
+                selectedPowerId === effect.id ? "selected" : ""
+              ]
+                .filter(Boolean)
+                .join(" ");
+              return `
+                <button type="button" class="${classes}" data-power-id="${effect.id}">
+                  <span class="power-tier">T${effect.tier}</span>
+                  <strong>${effect.id}</strong>
+                  <span class="power-kind">${effect.scope === "global" ? "Global" : "Targeted"} / ${effect.effectType}</span>
+                </button>
+              `;
+            })
+            .join("")
+        );
+        [...powerLibrary.querySelectorAll(".power-card")].forEach((card) => {
+          card.onclick = () => showPowerDetail(card.dataset.powerId);
+        });
+        if (!selectedPowerId && powerCatalog[0]) {
+          showPowerDetail(powerCatalog[0].id);
+        } else if (selectedPowerId) {
+          showPowerDetail(selectedPowerId);
+        }
+      }
+
+      async function refreshSession() {
+        sessionBundle = await api(`/api/sessions/${sessionId}`);
+        pendingApproval = sessionBundle.session.pendingInstallApproval;
+        renderDashboard();
+      }
+
+      async function loadPowerCatalog() {
+        powerCatalog = await api("/api/effects/catalog");
+        renderPowerLibrary();
+      }
+
+      function lookupPlayerByQr(qrToken) {
+        return sessionBundle?.players?.find((player) => player.qrToken === qrToken) || null;
+      }
+
+      async function handleQr(qrValue) {
+        if (currentPhase === "awaiting-executor") {
+          if (!qrValue.startsWith("player:")) return;
+          const player = lookupPlayerByQr(qrValue);
+          if (!player) {
+            text(resultPanel, "Unknown player QR.");
+            resultPanel.className = "terminal-result error";
+            return;
+          }
+          currentExecutor = player;
+          currentExecutorToken = qrValue;
+          renderIdentity(player);
+          if (pendingApproval) {
+            if (pendingApproval.architectPlayerId === player.id) {
+              setPhase("awaiting-executor", "Approval Pending", "Another player must approve or disallow your pending install before you can continue.");
+              return;
+            }
+            setPhase("awaiting-approval", "Approval Required", "A pending install must be approved or disallowed before this run can continue.");
+            renderApprovalPrompt();
+            return;
+          }
+          setPhase("awaiting-program", "Run Your Program", "Identity accepted. Present the program QR for execution.");
+          return;
+        }
+
+        if (currentPhase === "awaiting-program") {
+          if (!qrValue.startsWith("program:")) return;
+          try {
+            currentBegin = await api("/api/executions/begin", {
+              method: "POST",
+              body: JSON.stringify({
+                sessionId,
+                executorQrToken: currentExecutorToken,
+                programQrToken: qrValue
+              })
+            });
+            renderIdentity(currentBegin.executor);
+            setPhase("awaiting-input", "Select Targets", currentBegin.programDefinition.prompt);
+            renderSelection(currentBegin);
+          } catch (error) {
+            text(resultPanel, error.message);
+            resultPanel.className = "terminal-result error";
+          }
+        }
+      }
+
+      async function tick() {
+        if (!stream) return;
+        if (video.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const context = canvas.getContext("2d", { willReadFrequently: true });
+          if (context) {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const image = context.getImageData(0, 0, canvas.width, canvas.height);
+
+            if (currentPhase === "waiting-face") {
+              if (faceDetector && Date.now() - lastFaceCheck > 700) {
+                lastFaceCheck = Date.now();
+                try {
+                  const faces = await faceDetector.detect(video);
+                  faceSeenCount = faces.length ? faceSeenCount + 1 : 0;
+                  if (faceSeenCount >= 2) {
+                    setPhase("awaiting-executor", "Identify Yourself", "Face detected. Present your player QR code.");
+                  }
+                } catch {
+                  setPhase("awaiting-executor", "Identify Yourself", "Face detection failed. Present your player QR code.");
+                }
+              }
+            }
+
+            if (currentPhase === "awaiting-executor" || currentPhase === "awaiting-program") {
+              const code = window.jsQR(image.data, image.width, image.height, { inversionAttempts: "attemptBoth" });
+              if (code?.data) {
+                await handleQr(code.data);
+              }
+            }
+          }
+        }
+        frameHandle = requestAnimationFrame(tick);
+      }
+
+      async function startCamera() {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        });
+        video.srcObject = stream;
+        await video.play();
+        text(cameraStatus, faceDetector ? "Face detection online. Waiting for presence." : "Camera online. Face detection unavailable; direct QR identification mode.");
+        resetTerminal();
+        tick();
+      }
+
+      submitSelection.onclick = async () => {
+        try {
+          if (currentPhase === "awaiting-input") {
+            const selectedPlayerIds = [];
+            const targetA = document.getElementById("targetA");
+            const targetB = document.getElementById("targetB");
+            if (targetA?.value) selectedPlayerIds.push(targetA.value);
+            if (targetB?.value) selectedPlayerIds.push(targetB.value);
+            currentResolution = await api("/api/executions/resolve", {
+              method: "POST",
+              body: JSON.stringify({
+                sessionId,
+                executorQrToken: currentExecutorToken,
+                programQrToken: currentBegin.programCard.qrToken,
+                selectedPlayerIds
+              })
+            });
+            selectionArea.innerHTML = "";
+            submitSelection.style.display = "none";
+            text(resultPanel, currentResolution.resultText);
+            resultPanel.className = "terminal-result success";
+            await refreshSession();
+            if (currentResolution.architectPlayerIds.includes(currentBegin.executor.id)) {
+              setPhase("awaiting-build", "Architect Confirmed", "You are an Architect. Select an effect to install, or shut down the system.");
+              renderArchitectInstall();
+            } else {
+              setPhase("showing-result", "Run Complete", "You are not the Architect. Shut down the system to clear the terminal.");
+              shutdownButton.style.display = "block";
+            }
+          } else if (currentPhase === "awaiting-build") {
+            const installedEffectId = document.getElementById("installedEffect").value;
+            const targetPlayerId = document.getElementById("targetPlayer").value || null;
+            const approvalPlayerId = document.getElementById("approvalPlayer").value || null;
+            const installResult = await api("/api/executions/install", {
+              method: "POST",
+              body: JSON.stringify({
+                sessionId,
+                executionId: currentResolution.executionId,
+                executorQrToken: currentExecutorToken,
+                installedEffectId,
+                targetPlayerId,
+                approvalPlayerId
+              })
+            });
+            text(resultPanel, `${currentResolution.resultText}\n\nInstalled effect: ${installResult.installedEffectId}\nAnnouncement: ${installResult.publicAnnouncementText}`);
+            resultPanel.className = "terminal-result success";
+            selectionArea.innerHTML = "";
+            submitSelection.style.display = "none";
+            shutdownButton.style.display = "block";
+            if (installResult.pendingApproval) {
+              setPhase("showing-result", "Approval Queued", "The next Terminal user must approve or disallow this install.");
+            } else {
+              setPhase("showing-result", "Effect Installed", "Install complete. Shut down the system to clear the terminal.");
+            }
+            await refreshSession();
+          } else if (currentPhase === "awaiting-approval") {
+            const approvalResult = await api("/api/executions/install-approval", {
+              method: "POST",
+              body: JSON.stringify({
+                sessionId,
+                approverQrToken: currentExecutorToken,
+                approve: true
+              })
+            });
+            await refreshSession();
+            text(resultPanel, approvalResult.approved ? `Install approved.\nAnnouncement: ${approvalResult.publicAnnouncementText}` : "Install denied.");
+            resultPanel.className = "terminal-result success";
+            shutdownButton.style.display = "none";
+            submitSelection.textContent = "Run Program";
+            setPhase("awaiting-program", "Run Your Program", "Approval complete. Present the program QR for execution.");
+            selectionArea.innerHTML = "";
+            submitSelection.style.display = "none";
+          }
+        } catch (error) {
+          text(resultPanel, error.message);
+          resultPanel.className = "terminal-result error";
+        }
+      };
+
+      shutdownButton.onclick = () => {
+        if (currentPhase === "awaiting-approval") {
+          api("/api/executions/install-approval", {
+            method: "POST",
+            body: JSON.stringify({
+              sessionId,
+              approverQrToken: currentExecutorToken,
+              approve: false
+            })
+          })
+            .then(async () => {
+              await refreshSession();
+              text(resultPanel, "Install disallowed.");
+              resultPanel.className = "terminal-result success";
+              shutdownButton.style.display = "none";
+              submitSelection.textContent = "Run Program";
+              setPhase("awaiting-program", "Run Your Program", "Install denied. Present the program QR for execution.");
+              selectionArea.innerHTML = "";
+              submitSelection.style.display = "none";
+            })
+            .catch((error) => {
+              text(resultPanel, error.message);
+              resultPanel.className = "terminal-result error";
+            });
+          return;
+        }
+        shutdownButton.style.display = "none";
+        resetTerminal();
+      };
+
+      Promise.all([loadPowerCatalog(), refreshSession()])
+        .then(() => startCamera())
+        .catch((error) => {
+          text(cameraStatus, `Camera failed: ${error.message}`);
+          setPhase("camera-error", "Camera Error", "Camera access failed. Fix permissions and reload the terminal.");
+        });
+
+      setInterval(refreshSession, 4000);
+    </script>
+  </body>
+</html>
