@@ -400,3 +400,11 @@ Players should feel:
 This is a **minimal playable ruleset (v0.2)** intended for testing the unlock-race model.
 
 Expect iteration.
+
+---
+
+## Deployment Notes
+
+- The app is deployable to Railway.
+- Railway builds on Linux, so build scripts must stay cross-platform.
+- If you want SQLite data to persist across deploys and restarts, mount a Railway volume and set `COLONY_DB_PATH` to a file on that volume, for example `/data/colony.sqlite`.

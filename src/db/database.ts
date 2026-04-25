@@ -35,7 +35,9 @@ import {
   INSTALLED_EFFECT_DEFINITIONS
 } from "../domain/effects";
 
-const dbPath = path.join(process.cwd(), "colony.sqlite");
+const dbPath = process.env.COLONY_DB_PATH
+  ? path.resolve(process.env.COLONY_DB_PATH)
+  : path.join(process.cwd(), "colony.sqlite");
 export const db = new Database(dbPath);
 const UNASSIGNED_VALUE = "__UNASSIGNED__";
 
