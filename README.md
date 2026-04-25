@@ -39,18 +39,20 @@ The game is resolved through:
 
 The game runs continuously with no fixed rounds.
 
-1. Players discuss, negotiate, and exchange programs.
-2. When Player A jacks a program into Player B:
-   - Player B must immediately go to the Terminal, or wait and resolve it as soon as the Terminal is free.
-   - Player B must run the program. Players may not accept another player's program with the intention of not using it.
-3. The Terminal resolves the program through the Grid.
-4. If Player B is the **Architect**, they may choose to **install one persistent effect** into the Grid.
-5. After a short delay, such as 2 to 3 minutes, any public Grid changes are announced.
+
+1. Players discuss, negotiate, and exchange programs. Their aim is to identify and control the Architect power and build the network in their own image.
+2. When Player A 'jacks' a program into Player B:
+   - Player B must immediately go to the Operator.
+   - Player B must run the program.
+3. The Operator resolves the program privately and logs it.
+4. If Player B is the **Architect**, they may choose to advance the network by building a node.
+5. After a short delay, such as 2 to 3 minutes, the Operator announces any changes to the network state.
+
 
 ### Global Targeting Rule
 
 - Players may not target themselves with any program.
-- All programs must target another player unless a role explicitly states otherwise.
+- All programs must target another player or role unless a role explicitly states otherwise.
 
 ### Global Program-Handling Rules
 
@@ -100,9 +102,12 @@ Factions do not win through pre-tagged effects. Instead, a faction scores when o
 
 ### The Architect
 
-- One player is in the **Architect state** at game start unless a setup or later effect creates a second Architect.
-- The Architect state remains hidden until inferred or revealed.
-- The Architect may install one persistent effect when they run a received program.
+
+- One player is the **current Architect**. This is a state seperate to the player's role and must be discovered.
+- The Architect:
+  - remains in that role until changed
+  - may advance the network when running a program
+
 
 ### Install Rules
 
@@ -326,7 +331,7 @@ Corruption should:
 
 ## Core Truth Roles
 
-These roles provide **strong, binary truth**.
+These roles provide **strong, binary truth** returning either True or False from the Operator.
 
 ### Ghost Pair
 
